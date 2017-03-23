@@ -1,0 +1,12 @@
+[{"code":"0","msg":"成功读取查询条件","data":[
+      {"text":"自定义查询","isopen":"false","type":"self","num":"2","ismore":"1","ismoreselect":"0","subQuery":
+      		[{"text":"菜单中文名称","columnkey":"cache_menu","subtype":"input","columnval":"","subformat":""},
+     		 {"text":"对应包名称","columnkey":"cache_package","subtype":"input","columnval":"","subformat":""},
+      		 {"text":"用户角色名称","columnkey":"cache_role","subtype":"input","columnval":"","subformat":""},
+      		 {"text":"方法名称","columnkey":"cache_idname","subtype":"input","columnval":"","subformat":""}]},
+     	  {"text":"缓存类型","isopen":"false","type":"db","num":"2","ismore":"","ismoreselect":"checkbox","subQuery":
+	  		[{"text":"刷新","columnkey":"cache_type","subtype":"dic","columnval":"1","subformat":"","ischecked":""},
+	  		 {"text":"同步","columnkey":"cache_type","subtype":"dic","columnval":"2","subformat":"","ischecked":""}]}    
+	  
+  ]	
+}]

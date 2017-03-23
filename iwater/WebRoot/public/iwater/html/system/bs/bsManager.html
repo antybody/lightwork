@@ -1,0 +1,102 @@
+<div class="right_comment">
+<div class="right_main mt10" >
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/bs/bsManager">基础参数配置</a></li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-controller="bs_form">
+		    <div class="iptgroup">
+				 <label for="name"  style="width:200px;" >图片上传路径（本地）：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="pic_local" type="text" ms-duplex="pic_local"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >图片上传路径（远程）：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="pic_remote" type="text" ms-duplex="pic_remote"/>
+				<input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >文档上传路径（本地）：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="word_local" type="text" ms-duplex="word_local"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >文档上传路径（远程）：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="word_remote" type="text" ms-duplex="word_remote"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >资料下载路径（本地）：					   
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="download_local" type="text" ms-duplex="download_local"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >资料下载路径（远程）：					   
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="download_remote" type="text" ms-duplex="download_remote"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			 <div class="iptgroup">
+				 <label for="name"  style="width:200px;" >数据库配置文件：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="db_name" type="text" ms-duplex="db_name"/>
+				 
+				 <input type="hidden" />
+			</div>
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >缓存数据库配置文件：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="redis_name" type="text" ms-duplex="redis_name"/>
+				 
+				 <input type="hidden" />
+			</div>
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >管理员界面：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="admin_login" type="text" ms-duplex="admin_login"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >非管理员界面：
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="unadmin_login" type="text" ms-duplex="unadmin_login"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >查询条件路径（system）：					   
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="system_querypath" type="text" ms-duplex="system_querypath"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			<div class="iptgroup">
+				 <label for="name"  style="width:200px;" >查询条件路径（业务应用）：					   
+				 </label>
+				 <input class="ipt_text" disabled="disabled"  name="business_querypath" type="text" ms-duplex="business_querypath"/>
+				 <input type="checkbox"  ms-click="@clickCheckBox" name="bs_checkbox"/>
+				 <input type="hidden" />
+			</div>
+			<a href="#" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="javascript:;" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

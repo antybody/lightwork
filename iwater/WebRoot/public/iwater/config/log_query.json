@@ -1,0 +1,46 @@
+[
+    {
+        "code": "0",
+        "msg": "成功读取查询条件",
+        "data": [
+            {
+                "text": "自定义查询",
+                "isopen": "false",
+                "type": "self",
+                "num": "2",
+                "ismore": false,
+                "ismoreselect": "0",
+                "subQuery": [
+               		{
+                        "text": "日志用途",
+                        "columnkey": "log_desc",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "添加时间",
+                        "columnkey": "add_date",
+                        "subtype": "time",
+                        "columnval": "",
+                        "subformat": "yyyy-MM-dd"
+                    },
+                    {
+                        "text": "操作人名称",
+                        "columnkey": "log_user",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                    	"text": "操作人IP",
+                        "columnkey": "log_IP",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    }
+                ]
+            }
+        ]
+    }
+]

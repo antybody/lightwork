@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.menu.dao.MenuMapper">
+	
+	<!-- 这里进行备注  mybatis中含有具体的类一定要验证是否正确  ctrl alt -->
+	<resultMap id="BaseResultMap" type="com.baosight.iwater.system.menu.pojo.Menu">
+		<id column="ui_id" property="ui_id" jdbcType="VARCHAR" />
+		<result column="add_date" property="add_date" jdbcType="VARCHAR" />
+		<result column="up_date" property="up_date" jdbcType="VARCHAR" />
+		<result column="user_info" property="user_info" jdbcType="VARCHAR" />
+		<result column="menu_zhname" property="menu_zhname" jdbcType="VARCHAR" />
+		<result column="menu_enname" property="menu_enname" jdbcType="VARCHAR" />
+		<result column="menu_code" property="menu_code" jdbcType="VARCHAR" />
+		<result column="item_prefix" property="item_prefix" jdbcType="VARCHAR"/>
+		<result column="parent_menu" property="parent_menu" jdbcType="VARCHAR"/>
+		<result column="menu_url" property="menu_url" jdbcType="VARCHAR"/>
+		<result column="menu_sort" property="menu_sort" jdbcType="VARCHAR" />
+		<result column="menu_class" property="menu_class" jdbcType="VARCHAR" />
+		<result column="pic_class" property="pic_class" jdbcType="VARCHAR" />
+		<result column="is_del" property="is_del" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 通过sql片段实现代码复用 -->
+	<sql id="Base_Column_List">
+		ui_id,add_date,up_date,user_info,menu_zhname,menu_enname,menu_code,item_prefix,parent_menu,menu_url,
+		menu_sort,menu_class,pic_class,is_del
+	</sql>
+	
+	<!-- 根据主键 查询(没有进行逻辑删除的)对象 -->
+	<select id="selectByPrimaryKey" resultType="com.baosight.iwater.system.menu.pojo.Menu"
+		parameterType="java.lang.String">
+		select
+		s.ui_id,s.add_date,s.up_date,s.user_info,s.menu_zhname,s.menu_enname,s.menu_code,s.item_prefix,s.parent_menu,s.menu_url,
+		s.menu_sort,s.menu_class,s.pic_class,s.is_del,u.menu_zhname as parent_menuName
+		from sys_menu s left join sys_menu u on s.parent_menu=u.ui_id
+		where s.ui_id = #{ui_id,jdbcType=VARCHAR}
+		and s.is_del=1 
+	</select>
+	
+	<!-- 删除前 查询 其关联数据数量 menu-->
+	<select id="delQueryMenu" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(*) from sys_menu where parent_menu=#{ui_id,jdbcType=VARCHAR} and is_del=1
+	</select>
+	
+	<!-- 删除前 查询 其关联数据数量 power-->
+	<select id="delQueryPower" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select count(*) from sys_power where power_owner=
+		(select menu_code from sys_menu where ui_id=#{ui_id,jdbcType=VARCHAR} and is_del=1)
+		and del_modified=1
+	</select>
+	
+	<!-- 逻辑删除 记录操作时间-->
+	<delete id="deleteByPrimaryKey" parameterType="com.baosight.iwater.system.menu.pojo.Menu">
+		<!--  
+		delete from sys_menu 
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+		-->
+		update sys_menu set is_del=2,up_date=#{up_date,jdbcType=VARCHAR},
+		user_info=#{user_info,jdbcType=VARCHAR} where ui_id = #{ui_id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 删除菜单时,同步删除资源中的菜单 -->
+	<delete id="deletePower" parameterType="com.baosight.iwater.system.menu.pojo.Power">
+		update sys_power set del_modified=2,up_date=#{up_date,jdbcType=VARCHAR},user_info=#{user_info,jdbcType=VARCHAR} 
+		where power_code= (select menu_code from sys_menu where ui_id=#{ui_id,jdbcType=VARCHAR})
+	</delete>
+	
+	<!-- 添加数据 初始添加时间 -->
+	<insert id="insert" parameterType="com.baosight.iwater.system.menu.pojo.Menu">
+		insert into sys_menu (
+		<include refid="Base_Column_List" />
+		)values (#{ui_id,jdbcType=VARCHAR},
+		#{add_date,jdbcType=VARCHAR},
+		null,
+		#{user_info,jdbcType=VARCHAR},
+		#{menu_zhname,jdbcType=VARCHAR},
+		#{menu_enname,jdbcType=VARCHAR},
+		#{menu_code,jdbcType=VARCHAR},
+		#{item_prefix,jdbcType=VARCHAR},
+		#{parent_menu,jdbcType=VARCHAR},
+		#{menu_url,jdbcType=VARCHAR},
+		#{menu_sort,jdbcType=VARCHAR},
+		#{menu_class,jdbcType=VARCHAR},
+		#{pic_class,jdbcType=VARCHAR},
+		1)
+	</insert>
+	
+	<!-- 添加菜单时，同步添加资源 -->
+	<insert id="insertPower" parameterType="com.baosight.iwater.system.menu.pojo.Power">
+		insert into sys_power
+		(ui_id,add_date,user_info,power_type,power_prefix,power_name,
+		power_code,power_url,del_modified)
+		values
+		(
+		#{ui_id,jdbcType=VARCHAR},
+		#{add_date,jdbcType=VARCHAR},
+		#{user_info,jdbcType=VARCHAR},
+		#{power_type,jdbcType=VARCHAR},
+		#{power_prefix,jdbcType=VARCHAR},
+		#{power_name,jdbcType=VARCHAR},
+		#{power_code,jdbcType=VARCHAR},
+		#{power_url,jdbcType=VARCHAR},
+		1
+		)
+	</insert>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 oracle-->
+	<select id="findAllOrcl" resultType="com.baosight.iwater.system.menu.pojo.Menu" parameterType="java.util.Map">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		SELECT * FROM sys_menu u where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+		order by (u.menu_sort+0) asc
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 mysql-->
+	<select id="findAllSql" resultType="com.baosight.iwater.system.menu.pojo.Menu" parameterType="java.util.Map">
+		select
+		u.ui_id,u.add_date,u.up_date,u.user_info,u.menu_zhname,u.menu_enname,u.menu_code,u.item_prefix,
+		<if test="excel_flag == null">
+		   u.parent_menu,
+		</if>
+		<if test="excel_flag != null">
+		   s.menu_zhname as parent_menu,
+		</if>
+		u.menu_url,u.menu_sort,u.menu_class,u.pic_class,u.is_del 
+		from sys_menu u
+		left join sys_menu s
+		on u.parent_menu=s.ui_id
+		where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+        order by (u.menu_sort+0) asc
+        <if test="excel_flag == null">
+		 limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<!-- 分页条件查询(没有进行逻辑删除的)总记录数 -->
+	<select id="findAllSize" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(*) from sys_menu u where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+	</select>
+	
+	<!-- 查询父菜单下 子菜单的个数+2 -->
+	<select id="SonMenuNum" resultType="java.lang.Integer">
+		select count(*)+2 from sys_menu where parent_menu!='0'
+	</select>
+		
+	<!-- 查询项目对应的菜单 -->
+	<select id="findParentMenu" resultType="com.baosight.iwater.system.menu.pojo.Menu" parameterType="com.baosight.iwater.system.menu.pojo.Menu">
+		select u.ui_id,u.menu_zhname,u.menu_enname,u.menu_code,u.item_prefix,u.parent_menu,
+		u.menu_url,u.menu_sort,u.menu_class,u.pic_class,u.is_del
+		from sys_menu  u
+		where u.is_del=1 
+		<if test="item_prefix!=null and item_prefix!=''">  
+    		and u.item_prefix= #{item_prefix} 
+		</if>  
+	</select>
+	
+	<!-- 修改(没有进行逻辑删除的)数据 -->
+	<update id="updateByPrimaryKey" parameterType="com.baosight.iwater.system.menu.pojo.Menu">
+		update sys_menu set
+		up_date=#{up_date,jdbcType=VARCHAR},
+		user_info=#{user_info,jdbcType=VARCHAR},
+		menu_zhname=#{menu_zhname,jdbcType=VARCHAR},
+		menu_enname=#{menu_enname,jdbcType=VARCHAR},
+		item_prefix=#{item_prefix,jdbcType=VARCHAR},
+		parent_menu=#{parent_menu,jdbcType=VARCHAR},
+		menu_url=#{menu_url,jdbcType=VARCHAR},
+		menu_sort=#{menu_sort,jdbcType=VARCHAR},
+		menu_code=#{menu_code,jdbcType=VARCHAR},
+		menu_class=#{menu_class,jdbcType=VARCHAR},
+		pic_class=#{pic_class,jdbcType=VARCHAR}
+		where ui_id=#{ui_id,jdbcType=VARCHAR} and is_del=1
+	</update>
+	
+	<!-- 修改菜单时，同步修改资源中的菜单 -->
+	<update id="updatePower" parameterType="com.baosight.iwater.system.menu.pojo.Power">
+		update sys_power set
+		up_date=#{up_date,jdbcType=VARCHAR},
+		user_info=#{user_info,jdbcType=VARCHAR},
+		power_type=#{power_type,jdbcType=VARCHAR},
+		power_prefix=#{power_prefix,jdbcType=VARCHAR},
+		power_name=#{power_name,jdbcType=VARCHAR},
+		power_code=#{power_code,jdbcType=VARCHAR},
+		power_parent=#{power_parent,jdbcType=VARCHAR},
+		ui_id=#{ui_id,jdbcType=VARCHAR},
+		power_url=#{power_url,jdbcType=VARCHAR}
+		where del_modified=1 and
+		power_code= (select menu_code from sys_menu where ui_id=#{ui_id,jdbcType=VARCHAR} and is_del=1)
+	</update>
+	
+	<!-- 唯一性校验 (新增 或者 修改使用)-->
+	<select id="checkOnly" resultType="java.lang.Integer" parameterType="com.baosight.iwater.system.menu.pojo.Menu">
+		select count(*) as count from sys_menu
+		where 1=1
+		<if test="menu_code != null and menu_code != '' ">
+		    and menu_code= #{menu_code,jdbcType=VARCHAR}
+		</if>
+		<if test="ui_id != null and ui_id != '' ">
+			and ui_id != #{ui_id,jdbcType=VARCHAR}
+        </if>
+	</select>
+	
+	<!-- 唯一性校验  权限资源 -->
+	<select id="checkOnlyPower" resultType="java.lang.Integer" parameterType="com.baosight.iwater.system.menu.pojo.Power">
+		select count(*) from sys_power
+		where 1=1
+		<if test="power_code != null and power_code != '' ">
+		    and power_code= #{power_code,jdbcType=VARCHAR}
+		</if>
+		<if test="ui_id != null and ui_id != '' ">
+			and ui_id != #{ui_id,jdbcType=VARCHAR}
+        </if>
+	</select>
+</mapper>

@@ -1,0 +1,86 @@
+<style type="text/css">
+/*未选中样式*/
+#line_type a.level0 { text-align: center; display:block;  border:1px #ccc solid;font: 100 16px/30px 'microsoft yahei';}
+#line_type .level0{display: block; color:black;font-size:12px;word-spacing: 2px;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;}
+
+/*选中样式*/
+#line_type a.level1 {background-color:#0080ff; text-align: center; display:block;  border:1px #0080ff solid;font: 100 16px/30px 'microsoft yahei';}
+#line_type .level1{display: block; color:white;font-size:12px;word-spacing: 2px;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;}
+
+/*鼠标悬停时的样式*/
+#line_type .level0:hover{color:#0080ff;}
+
+/*ul li样式*/
+#line_type ul li{margin-top:10px;margin-left:5px;}
+</style>
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="page_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/power/powerManager">权限资源管理</a>></li>
+		<li>{{@power_showType}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+			<div class="iptgroup">
+				<label for="name">所属项目：					   
+				 </label>
+				 <select name="power_prefix" class="ipt_select" ms-duplex="power_prefix" data-duplex-changed="@change_select()"
+				 	ms-rules="{sysPower_addPage_item:true}" style="position:absolute;">
+				 	<option ms-for="(index,el) in @menu_project" ms-attr="{value:el.project_value}">{{el.project_name}}</option>
+				 </select>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">所属菜单：
+				 </label>
+				
+				 <input class="ipt_text" name="power_ownerName" type="text" ms-duplex="@power_ownerName"  readonly="readonly"
+				 style="background-color:#F2F2F2;" ms-rules="{sysPower_addPage_menu:true}"/>
+				 <a href="javascript:void(0);" ms-click="@org_chose()" style="position:absolute;margin-left:330px;color:red;">点击选择</a>
+				 <span class="ipt_erro" style="margin-left:400px;"></span>
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name">页面名称：
+				 </label>
+				 <input class="ipt_text" name="power_name" type="text" ms-duplex="power_name"
+				 	    ms-rules="{required:true}" data-required-message="名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name">页面代码：					   
+				 </label>
+				 <input class="ipt_text" name="power_code" type="text" ms-duplex="power_code"
+				 	ms-rules="{sysPower_addPage_code:true}"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup" style="height:100px;">
+				 <label for="name">页面路径：					   
+				 </label>
+				 <textarea cols="20" rows="10" ms-duplex="power_url" name="power_url" maxlength="1000"
+				 		style="width:300px;height:80px;margin-left: 20px;position: absolute;"
+				 		ms-rules="{required:true}" data-required-message="路径必须填写"></textarea>
+				 <!-- <input class="ipt_text" name="power_url" type="text" ms-duplex="power_url"
+				 		ms-rules="{required:true}" data-required-message="路径必须填写"/> -->
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<fieldset style="border:1px solid #ccc;width:60%;padding:20px;" id="line_type">
+					<legend>按钮选择</legend>
+    				<ul>
+           				<li style="float:left;" ms-for="($index,el) in @buttonArr" ms-html="el" ms-click="@changeShow">
+           				</li>
+           			</ul>
+    	    	</fieldset>
+    	    	<span class="ipt_erro"></span>
+			</div>
+			
+			
+			<a href="#" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="#" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

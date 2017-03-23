@@ -1,0 +1,79 @@
+[
+    {
+        "code": "0",
+        "msg": "成功读取查询条件",
+        "data": [
+            {
+                "text": "自定义查询",
+                "isopen": "false",
+                "type": "self",
+                "num": "2",
+                "ismore": "1",
+                "ismoreselect": "0",
+                "subQuery": [
+                    {
+                        "text": "菜单中文名称",
+                        "columnkey": "menu_zhname",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "菜单英文名称",
+                        "columnkey": "menu_enname",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "菜单访问路径",
+                        "columnkey": "menu_url",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "菜单所属项目",
+                        "columnkey": "item_prefix",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "菜单编号",
+                        "columnkey": "menu_code",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    }
+                ]
+            },
+            {
+                "text": "菜单类型",
+                "isopen": "false",
+                "type": "db",
+                "num": "2",
+                "ismore": "",
+                "ismoreselect": "checkbox",
+                "subQuery": [
+                    {
+                        "text": "父菜单",
+                        "columnkey": "parent_menu",
+                        "subtype": "dic",
+                        "columnval": "0",
+                        "subformat": "",
+                        "ischecked": ""
+                    },
+                    {
+                        "text": "子菜单",
+                        "columnkey": "parent_menu",
+                        "subtype": "dic",
+                        "columnval": "1",
+                        "subformat": "",
+                        "ischecked": ""
+                    }
+                ]
+            }
+        ]
+    }
+]

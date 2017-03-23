@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.power.dao.PowerMapper">
+	
+	<!-- 通过sql片段实现代码复用 -->
+	<sql id="Base_Column_List">
+		ui_id,add_date,up_date,user_info,power_type,power_owner,power_prefix,power_name,power_code,
+		power_url,power_token,power_follower,del_modified
+	</sql>
+	
+	<!-- 根据主键 查询(没有进行逻辑删除的)对象 -->
+	<select id="selectByPrimaryKey" resultType="com.baosight.iwater.system.power.pojo.Power"
+		parameterType="java.lang.String">
+		select
+		s.ui_id,s.add_date,s.up_date,s.user_info,s.power_type,s.power_owner,s.power_prefix,s.power_name,s.power_code,
+		s.power_url,s.power_token,s.power_follower,s.del_modified,u.menu_zhname as power_ownerName
+		from sys_power s  left join sys_menu u
+		on s.power_owner=u.menu_code
+		where s.ui_id = #{ui_id,jdbcType=VARCHAR}
+		and s.del_modified=1 
+	</select>
+	
+	<!-- 唯一性校验 (新增 或者 修改使用)-->
+	<select id="checkOnly" resultType="java.lang.Integer" parameterType="com.baosight.iwater.system.power.pojo.Power">
+		select count(*) as count from sys_power
+		where 1=1
+		<if test="power_code != null and power_code != '' ">
+		    and power_code= #{power_code,jdbcType=VARCHAR}
+		</if>
+		<if test="ui_id != null and ui_id != '' ">
+			and ui_id != #{ui_id,jdbcType=VARCHAR}
+        </if>
+	</select>
+	
+	<!-- 逻辑删除 记录操作时间-->
+	<delete id="deleteByPrimaryKey" parameterType="com.baosight.iwater.system.power.pojo.Power">
+		<!--  
+		delete from sys_org
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+		-->
+		update sys_power set del_modified=2,up_date=#{up_date,jdbcType=VARCHAR},user_info=#{user_info,jdbcType=VARCHAR} 
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 添加数据 初始添加时间 -->
+	<insert id="insert" parameterType="com.baosight.iwater.system.power.pojo.Power">
+		insert into sys_power (
+		<include refid="Base_Column_List" />
+		)values (#{ui_id,jdbcType=VARCHAR},
+		#{add_date,jdbcType=VARCHAR},
+		null,
+		#{user_info,jdbcType=VARCHAR},
+		#{power_type,jdbcType=VARCHAR},
+		#{power_owner,jdbcType=VARCHAR},
+		#{power_prefix,jdbcType=VARCHAR},
+		#{power_name,jdbcType=VARCHAR},
+		#{power_code,jdbcType=VARCHAR},
+		#{power_url,jdbcType=VARCHAR},
+		#{power_token,jdbcType=VARCHAR},
+		#{power_follower,jdbcType=VARCHAR},
+		1)
+	</insert>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 oracle-->
+	<select id="findAllOrcl" resultType="com.baosight.iwater.system.power.pojo.Power" parameterType="java.util.Map">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		select 
+		ui_id,add_date,up_date,user_info,power_type,power_parent,power_owner,power_prefix,power_name,power_code,
+		power_url,power_token,power_follower,del_modified
+ 		from sys_power s where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 mysql-->
+	<select id="findAllSql" resultType="com.baosight.iwater.system.power.pojo.Power" parameterType="java.util.Map">
+		select 
+		ui_id,add_date,up_date,user_info,power_type,power_parent,power_owner,power_prefix,power_name,power_code,
+		power_url,power_token,power_follower,del_modified
+ 		from sys_power s where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+        <if test="excel_flag == null">
+		 limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<!-- 查询所有权限资源 -->
+	<select id="findAll" resultType="com.baosight.iwater.system.power.pojo.Power">
+		select 
+		ui_id,add_date,up_date,user_info,power_type,power_parent,power_owner,power_prefix,power_name,power_code,
+		power_url,power_token,power_follower,del_modified
+ 		from sys_power s where 1=1 and s.del_modified=1
+	</select>
+	
+	<!-- 分页查询(没有进行逻辑删除的)总记录数 -->
+	<select id="findAllSize" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+		count(*)
+ 		from sys_power s
+		where 1=1 
+        <if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+	</select>
+	
+	<!-- 修改(没有进行逻辑删除的)数据 -->
+	<update id="updateByPrimaryKey" parameterType="com.baosight.iwater.system.power.pojo.Power">
+		update sys_power set
+		up_date=#{up_date,jdbcType=VARCHAR},
+		user_info=#{user_info,jdbcType=VARCHAR},
+		power_type=#{power_type,jdbcType=VARCHAR},
+		power_owner=#{power_owner,jdbcType=VARCHAR},
+		power_prefix=#{power_prefix,jdbcType=VARCHAR},
+		power_name=#{power_name,jdbcType=VARCHAR},
+		power_code=#{power_code,jdbcType=VARCHAR},
+		power_url=#{power_url,jdbcType=VARCHAR},
+		power_token=#{power_token,jdbcType=VARCHAR},
+		power_follower=#{power_follower,jdbcType=VARCHAR}
+		where ui_id=#{ui_id,jdbcType=VARCHAR}
+		and del_modified=1
+	</update>
+</mapper>

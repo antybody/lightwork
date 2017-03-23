@@ -1,0 +1,80 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="bs_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/db/dbManager">数据库配置</a></li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<div ms-controller="db_form">
+		   <div style="margin-left:150px">
+		   <a href="javascript:;" data-index="0" class=" btn_db_click btn_db_bs" ms-click="@dbredisRead"><span class="btn_query_span">读取缓存配置</span></a>
+    	   <a href="javascript:;" data-index="1" class=" btn_db btn_db_bs" ms-click="@dbRead"><span class="btn_query_span">读取数据库配置</span></a>
+    	   <a href="javascript:;" data-index="2" class=" btn_db btn_db_bs" id="save_db" ms-click="@dbNewFile" data-index-now="0"><span class="btn_query_span">生成新文件</span></a>
+    	   <a href="javascript:;" data-index="3" class=" btn_db btn_db_bs" id="reset_db" ms-click="@reset" data-index-now="0"><span class="btn_query_span">重置</span></a>
+    	   
+		   </div>
+		   
+			<fieldset style="border:1px solid #ddd;padding:15px;margin: 10px 150px 10px 150px;">
+    		<legend>配置显示区</legend>
+    		<form id="db_form2">
+    		<div class="list_table1"> <!-- 查询列表 -->
+    			<div class="iptgroup2">
+				 	<label   style="width:270px;" >访问地址：					   
+				 	</label>
+				 	<input class="ipt_text" disabled="disabled"   name="redis_addr" type="text" ms-duplex="redis_addr"/>
+				 	<input type="checkbox"  ms-click="@clickCheckBox" />
+				 	<input type="hidden" />
+				</div>
+				<div class="iptgroup2">
+				 	<label   style="width:270px;" >访问端口：					   
+				 	</label>
+				 	<input class="ipt_text" disabled="disabled"   name="redis_port" type="text" ms-duplex="redis_port"/>
+				 	<input type="checkbox"  ms-click="@clickCheckBox" />
+				 	<input type="hidden" />
+				</div>
+				<div class="iptgroup2">
+				 	<label   style="width:270px;" >授权密码：					   
+				 	</label>
+				 	<input class="ipt_text" disabled="disabled"   name="redis_auth" type="text" ms-duplex="redis_auth"/>
+				 	<input type="checkbox"  ms-click="@clickCheckBox" />
+				 	<input type="hidden" />
+				</div>
+				<div class="iptgroup2">
+				 	<label   style="width:270px;" >最大数据库连接数(0表示无限制):</label>
+				 	<input class="ipt_text" disabled="disabled"   name="redis_max_total" type="text" ms-duplex="redis_max_total"/>
+				 	<input type="checkbox"  ms-click="@clickCheckBox" />
+				 	<input type="hidden" />
+				</div>
+				<div class="iptgroup2">
+				 	<label   style="width:270px;" >最大空闲时间(0表示无限制):</label>
+				 	<input class="ipt_text" disabled="disabled"   name="redis_max_idle" type="text" ms-duplex="redis_max_idle"/>
+				 	<input type="checkbox"  ms-click="@clickCheckBox" />
+				 	<input type="hidden" />
+				</div>
+				<div class="iptgroup2">
+				 	<label   style="width:270px;" >最大建立连接等待时间(-1表示无限制):</label>
+				 	<input class="ipt_text" disabled="disabled"   name="redis_max_wait" type="text" ms-duplex="redis_max_wait"/>
+				 	<input type="checkbox"  ms-click="@clickCheckBox" />
+				 	<input type="hidden" />
+				</div>
+				<div class="iptgroup2">
+				 	<label   style="width:270px;" >使用连接时，检测连接是否成功：					   
+				 	</label>
+				 	<select name="redis_test_on_borrow" disabled="disabled" class="ipt_select" ms-duplex="redis_test_on_borrow"><option value="true">是</option><option value="false">否</option></select>
+				 	<input type="checkbox"  ms-click="@clickCheckBox" />
+				 	<input type="hidden" />
+				</div>
+            </div>
+            </form>
+           <form id="db_form3">
+            <div class="list_table2"> <!-- 查询列表 -->
+            </div>
+           </form>
+    	   </fieldset>
+    	   
+    	  
+		   
+		 </div>
+    </div>
+</div>
+</div>

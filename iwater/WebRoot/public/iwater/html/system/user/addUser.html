@@ -1,0 +1,93 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="user_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/user/userManager">用户管理</a>></li>
+		<li>{{@menu_type}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+		    <div class="iptgroup">
+				 <label for="name">姓名：
+				 </label>
+				 <input class="ipt_text" name="user_name" type="text" ms-duplex="@user_name"
+				        ms-rules="{required:true}" data-required-message="必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">账号：
+				 </label>
+				 <input class="ipt_text" name="user_code" type="text" ms-duplex="@user_code"
+				 ms-rules="{sysUser_addUser_code:true}"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">密码：
+				 </label>
+				 <input class="ipt_text" id="user_pwd" name="user_pwd" type="password" ms-duplex="@user_pwd"
+				 ms-rules="{sysUser_addUser_pwd:true}"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">确认密码：
+				 </label>
+				 <input class="ipt_text" name="confirm_password" type="password" 
+				 ms-duplex="@confirm_password"
+                 ms-rules="{required:true,equalto:'user_pwd'}" 
+                 data-equalto-message="两次密码输入不一致"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">手机：
+				 </label>
+				 <input class="ipt_text" name="user_tel" type="text" ms-duplex="@user_tel"
+				 ms-rules="{required:true, pattern: /^0?(13[0-9]|15[012356789]|18[0-9]|17[0-9])[0-9]{8}$/ }"
+				 data-message="请输入正确的手机号"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">邮箱：
+				 </label>
+				 <input class="ipt_text" name="user_mail" type="text" ms-duplex="@user_mail"
+				 ms-rules="{norequired:true,email:true}" 
+                 data-email-message="请输入正确的邮箱"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">座机：
+				 </label>
+				 <input class="ipt_text" name="user_phone" type="text" ms-duplex="@user_phone"
+				 ms-rules="{norequired:true, pattern: /^0\d{2,3}-?\d{7,8}$/ }" 
+                 data-message="请输入正确的座机"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">组织机构：
+				 </label>
+				 <input class="ipt_text" name="org_zhname" type="text" ms-duplex="@org_zhname"  disabled="disabled"/>
+				 <span class="ipt_erro"></span>
+				 <a href="javascript:void(0);" ms-click="@org_chose()" style="color:red;">点击选择</a>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">角色：
+				 </label>
+				 <input class="ipt_text" name="role_zhname" type="text" ms-duplex="@role_zhname" disabled="disabled"/>
+				 <span class="ipt_erro"></span>
+				 <a href="javascript:void(0);" ms-click="@role_chose()" style="color:red;">点击选择</a>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">职务：
+				 </label>
+				 <select name="user_post" class="ipt_select" ms-duplex="user_post" 
+				 	ms-rules="{sysUser_addUser_item:true}" style="position:absolute;">
+				 	<option ms-for="(index,el) in @post_sel" ms-attr="{value:el.post_value}">{{el.post_name}}</option>
+				 </select>
+				 <span class="ipt_erro"></span>
+			</div>
+			
+			<a href="#" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="#" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

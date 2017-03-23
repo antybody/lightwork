@@ -1,0 +1,54 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="dic_form">
+	<ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/dic/dicManager">字典管理</a>></li>
+		<li>{{@opt_type}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+			<div class="iptgroup">
+				<label for="name">节点编码：&nbsp;&nbsp;&nbsp;</label>
+				<input class="ipt_text" name="dic_code" type="text" 
+					ms-duplex="@dic_code" ms-rules="{required:true,checkDicCode:true}"
+					data-required-message="编码必须填写" />
+				<span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">节点名称：&nbsp;&nbsp;&nbsp;</label>
+				<input class="ipt_text" name="dic_name" type="text" 
+					ms-duplex="@dic_name" ms-rules="{required:true}" 
+					data-required-message="名称必须填写"/>
+				<span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">父节点编码：</label>
+				<input class="ipt_text" name="parent_code" type="text" 
+					ms-duplex="@parent_code" ms-rules="{required:true,checkParentExist:true}"
+					data-required-message="父节点编码必须填写"/>
+				<span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">节点描述：&nbsp;&nbsp;&nbsp;</label>
+				<input class="ipt_text" name="dic_desc" type="text" ms-duplex="@dic_desc"/>
+				<span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">是否启用：&nbsp;&nbsp;&nbsp;</label>
+				<select class="ipt_select" name="is_usable" ms-duplex="is_usable" style="position:absolute;">
+					<option value="1">是</option>
+					<option value="0">否</option>
+				</select>
+				<span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">节点排序：&nbsp;&nbsp;&nbsp;</label>
+				<input class="ipt_text" name="seq" type="text" ms-duplex="@seq"/>
+				<span class="ipt_erro"></span>
+			</div>
+			<a href="#!/dic/addDic" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="#!/dic/addDic" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+	</div>
+</div>
+</div>

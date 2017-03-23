@@ -1,0 +1,57 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="inter_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/power/powerManager">权限资源管理</a>></li>
+		<li>{{@power_showType}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+			<div class="iptgroup">
+				<label for="name">所属项目：					   
+				 </label>
+				 <select name="power_prefix" class="ipt_select" ms-duplex="power_prefix"
+				 	ms-rules="{sysPower_addInterface_item:true}" style="position:absolute;">
+				 	<option ms-for="(index,el) in @menu_project" ms-attr="{value:el.project_value}">{{el.project_name}}</option>
+				 </select>
+				 <span class="ipt_erro"></span>
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name">接口名称：
+				 </label>
+				 <input class="ipt_text" name="power_name" type="text" ms-duplex="power_name"
+				 	    ms-rules="{required:true}" data-required-message="名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name">接口代码：					   
+				 </label>
+				 <input class="ipt_text" name="power_code" type="text" ms-duplex="power_code"
+				 	ms-rules="{sysPower_addInterface_code:true}"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">接口路径：					   
+				 </label>
+				 <input class="ipt_text" name="power_url" type="text" ms-duplex="power_url"
+				 		ms-rules="{required:true}" data-required-message="路径必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">接口token:</label>
+				<input class="ipt_text" name="power_token" type="text" ms-duplex="power_token" ms-rules="{sysPower_addInterface_token:true}"/>
+				<span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">实际访问token: </label>
+				<span id="showToken" style="width:300px;margin-left:20px;color:red;position:absolute;"></span>
+				<span class="ipt_erro"></span>
+			</div>
+			<a href="#" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="#" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

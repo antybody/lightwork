@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.log.dao.logMapper">
+	
+	<!-- 通过sql片段实现代码复用 -->
+	<sql id="Base_Column_List">
+		ui_id as "ui_id",
+		add_date as "add_date",
+		up_date as "up_date",
+		log_desc as "log_desc",
+		log_method as "log_method",
+		log_user as "log_user",
+		log_type as "log_type",
+		log_IP as "log_IP",
+		log_excode as "log_excode",
+		log_exdesc as "log_exdesc",
+		log_params as "log_params",
+		log_date as "log_date",
+		del_modified as "del_modified"
+	</sql>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 oracle-->
+	<select id="findAllOrcl" resultType="com.baosight.iwater.system.log.pojo.Log" parameterType="java.util.Map">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		select 
+		<include refid="Base_Column_List" />
+ 		from sys_log s
+		where 1=1 
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+		order by s.add_date desc
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 mysql-->
+	<select id="findAllSql" resultType="com.baosight.iwater.system.log.pojo.Log" parameterType="java.util.Map">
+		select 
+		<include refid="Base_Column_List" />
+ 		from sys_log s
+		where 1=1 
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+        <if test="excel_flag == null">
+		 order by s.add_date desc limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER} 
+		</if>
+	</select>
+	
+	<!-- 分页查询(没有进行逻辑删除的)总记录数 -->
+	<select id="findAllSize" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+		count(*)
+ 		from sys_log s
+		where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+	</select>
+	
+	<select id="selectByPrimaryKey" resultType="com.baosight.iwater.system.log.pojo.Log" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+ 		from sys_log s
+		where s.ui_id = #{ui_id,jdbcType=VARCHAR}
+		and s.del_modified=1 
+	</select>
+	
+	<!-- 添加数据 初始添加时间 -->
+	<insert id="insert" parameterType="com.baosight.iwater.system.log.pojo.Log">
+		insert into sys_log (
+		ui_id,
+		add_date,
+		up_date,
+		log_desc,
+		log_method,
+		log_user,
+		log_type,
+		log_IP,
+		log_excode,
+		log_exdesc,
+		log_params,
+		log_date,
+		del_modified
+		)values (#{ui_id,jdbcType=VARCHAR},
+		#{add_date,jdbcType=VARCHAR},
+		#{up_date,jdbcType=VARCHAR},
+		#{log_desc,jdbcType=VARCHAR},
+		#{log_method,jdbcType=VARCHAR},
+		#{log_user,jdbcType=VARCHAR},
+		#{log_type,jdbcType=VARCHAR},
+		#{log_IP,jdbcType=VARCHAR},
+		#{log_excode,jdbcType=VARCHAR},
+		#{log_exdesc,jdbcType=VARCHAR},
+		#{log_params,jdbcType=VARCHAR},
+		#{log_date,jdbcType=VARCHAR},
+		1
+		)
+	</insert>
+	
+	<!-- 逻辑删除  记录操作时间 -->
+	<delete id="del" parameterType="com.baosight.iwater.system.log.pojo.Log">
+		update sys_log set del_modified=2,up_date=#{up_date,jdbcType=VARCHAR} where ui_id = #{ui_id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 导出日志查询 oracle -->
+	<select id="downloadOrcl" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		select 
+		<include refid="Base_Column_List" />
+ 		from sys_log s
+		where 1=1 
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+		order by s.add_date desc
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 导出日志查询 mysql -->
+	<select id="downloadSql" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select 
+		<include refid="Base_Column_List" />
+ 		from sys_log s
+		where 1=1 
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+		order by s.add_date desc limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER} 
+	</select>
+	
+	<!-- 导出全部日志查询-->
+	<select id="download" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select 
+		<include refid="Base_Column_List" />
+ 		from sys_log s
+		where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+	</select>
+</mapper>

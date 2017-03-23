@@ -1,0 +1,74 @@
+[
+    {
+        "code": "0",
+        "msg": "成功读取查询条件",
+        "data": [
+            {
+                "text": "自定义查询",
+                "isopen": "false",
+                "type": "self",
+                "num": "2",
+                "ismore": "1",
+                "ismoreselect": "0",
+                "subQuery": [
+                    {
+                        "text": "角色名称",
+                        "columnkey": "role_zhname",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "角色代码",
+                        "columnkey": "role_code",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    }
+                ]
+            },
+            {
+                "text": "角色类型",
+                "isopen": "false",
+                "type": "db",
+                "num": "4",
+                "ismore": "",
+                "ismoreselect": "checkbox",
+                "subQuery": [
+                    {
+                        "text": "浏览类",
+                        "columnkey": "role_type",
+                        "subtype": "dic",
+                        "columnval": "role_type_001",
+                        "subformat": "",
+                        "ischecked": ""
+                    },
+                    {
+                        "text": "填报类",
+                        "columnkey": "role_type",
+                        "subtype": "dic",
+                        "columnval": "role_type_002",
+                        "subformat": "",
+                        "ischecked": ""
+                    },
+                    {
+                        "text": "操作类",
+                        "columnkey": "role_type",
+                        "subtype": "dic",
+                        "columnval": "role_type_003",
+                        "subformat": "",
+                        "ischecked": ""
+                    },
+                    {
+                        "text": "管理类",
+                        "columnkey": "role_type",
+                        "subtype": "dic",
+                        "columnval": "role_type_004",
+                        "subformat": "",
+                        "ischecked": ""
+                    }
+                ]
+            }
+        ]
+    }
+]

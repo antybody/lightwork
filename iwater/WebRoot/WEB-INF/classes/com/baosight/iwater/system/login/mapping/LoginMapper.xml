@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.login.dao.LoginMapper">
+	
+	<!-- 这里进行备注  mybatis中含有具体的类一定要验证是否正确  ctrl alt -->
+	<resultMap id="BaseResultMap" type="com.baosight.iwater.system.login.pojo.User">
+		<id column="ui_id" property="ui_id" jdbcType="VARCHAR" />
+		<result column="add_date" property="add_date" jdbcType="VARCHAR" />
+		<result column="up_date" property="up_date" jdbcType="VARCHAR" />
+		<result column="user_info" property="user_info" jdbcType="VARCHAR" />
+		<result column="user_code" property="user_code" jdbcType="VARCHAR" />
+		<result column="user_pwd" property="user_pwd" jdbcType="VARCHAR" />
+		<result column="user_name" property="user_name" jdbcType="VARCHAR" />
+		<result column="user_mail" property="user_mail" jdbcType="VARCHAR" />
+		<result column="user_tel" property="user_tel" jdbcType="VARCHAR" />
+		<result column="user_phone" property="user_phone" jdbcType="VARCHAR" />
+		<result column="del_modified" property="del_modified" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 通过sql片段实现代码复用 -->
+	<sql id="Base_Column_List">
+		ui_id as "ui_id",
+		add_date as "add_date",
+		up_date as "up_date",
+		user_info as "user_info",
+		user_code as "user_code",
+		user_pwd as "user_pwd",
+		user_name as "user_name",
+		user_mail as "user_mail",
+		user_tel as "user_tel",
+		user_phone as "user_phone",
+		del_modified as "del_modified"
+	</sql>
+	
+	<!-- 查询用户的角色标签 -->
+	<select id="selRoleByUserCode" resultType="java.lang.String" parameterType="java.lang.String">
+		select role_code as "role_code" 
+		from  rel_user_role where del_modified=1 and user_code=#{user_code,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据账号查询用户对象 -->
+	<select id="selectByUserCode" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where user_code = #{user_code,jdbcType=VARCHAR}
+	</select>
+	
+	<!--得到所有角色对应的访问资源 -->
+	<select id="selectRolePower" resultType="com.baosight.iwater.system.login.pojo.Power">
+		select r.role_code,s.power_code,s.power_owner,
+		s.power_follower,s.power_type,s.power_name,s.power_url,s.power_token
+		from rel_role_power r left join  sys_power s on r.power_code=s.power_code 
+		where r.del_modified=1 and s.del_modified=1
+	</select>
+	
+	<!--根据路径返回对应接口的token  不是接口地址 返回 null-->
+	<select id="getToken" resultType="java.lang.String">
+		select power_token as "power_token" from sys_power where power_type='001' and del_modified=1
+		and power_url=#{url,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查询用户相关的菜单  -->
+	<select id="getUserMenu" parameterType="java.lang.String" resultType="java.util.Map">
+		select u.ui_id as "ui_id",
+		u.menu_zhname as "menu_zhname",
+		u.menu_url as "menu_url",
+		u.menu_class as "menu_class",
+		u.pic_class as "pic_class",
+		u.parent_menu as "parent_menu",
+		r.role_code as "role_code"
+ 		from sys_menu u
+		left join rel_role_power r
+		on u.menu_code=r.power_code 
+		left join rel_user_role e
+		on r.role_code=e.role_code
+		where u.is_del=1 and r.del_modified=1 and e.del_modified=1
+		and e.user_code=#{user_code,jdbcType=VARCHAR}
+		and u.item_prefix= 'iwater'
+		order by (u.menu_sort+0) asc
+	</select>
+	
+	<!-- 判断用户是否最高管理员 -->
+	<select id="isAdmin" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from rel_user_role where role_code='ROLE_ADMIN' 
+		and user_code=#{user_code,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 得到所有菜单  最高管理员可用 -->
+	<select id="getAllMenu" resultType="java.util.Map">
+		select u.ui_id as "ui_id",
+		u.menu_zhname as "menu_zhname",
+		u.menu_url as "menu_url",
+		u.menu_class as "menu_class",
+		u.pic_class as "pic_class",
+		u.parent_menu as "parent_menu"
+ 		from sys_menu u where u.is_del=1
+    	and u.item_prefix= 'iwater'
+		order by (u.menu_sort+0) asc
+	</select>
+</mapper>

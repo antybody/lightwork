@@ -1,0 +1,33 @@
+<!-- 菜单管理  -->
+<div class="right_comment">
+  <div class="right_main mt10">
+     <ul class="nav">
+		 <li><a href="#!/main">首页</a><span>></span></li>
+		 <li>组织机构管理</li>
+	 </ul>
+      <div class="panel panel_over org">
+            <div class="listgroup">
+              <div class="tree">
+    				<ul class="ztree" id="org_tree"></ul>
+    				<input id="org_parent" data-key="org_parent" type="text" style="display: none;"/>
+    		  </div>
+			</div>
+           <div class="listmember">               
+                <div ms-controller="list_query_org" id="org_query_table" style="margin:30px 10px;">  <!-- 查询条件 -->
+                      <wbr ms-widget="{is:'ms-menuselect',menu: @menu,queryList:@queryList,clearAll:@clearAll}" />                      
+                
+                <div class="midiv">   <!-- 输出信息 -->
+                     <span>符合查询条件的数量：<strong>{{@totalCount}}</strong>条</span>
+					 <a class="btn_adduser" href="#!/org/addOrg?type=add">组织机构</a>
+                </div>
+                </div>
+                <div class="list_table" id="org_list_table" style="margin:0 10px;" ms-controller="table_list_org"> <!-- 查询列表 -->
+                   <wbr ms-widget="{is:'ms-tablelist',columns:@gridEnColumns,zcolumns:@gridZhColumns,data:@gridData,isHandle:@isHandle,handleData:@handleData,cbProxy:@cbProxy}" />
+                </div>
+                <div class="pager" style="margin:0 10px;" ms-controller="pager_list_org"> <!-- 翻页-->
+                      <wbr ms-widget="{is:'ms-pager',totalPages:@totalPages,showPages:@showPages,onPageClick:@onPageClick,currentPage:@currentPage}" />
+                </div>                 
+           </div>
+      </div>
+  </div>
+</div>

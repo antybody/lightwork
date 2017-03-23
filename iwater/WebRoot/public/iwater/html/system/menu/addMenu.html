@@ -1,0 +1,85 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="menu_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/menu/menuManager">菜单管理</a>></li>
+		<li>{{@menu_type}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+		    <div class="iptgroup">
+				 <label for="name">菜单名称：
+				 </label>
+				 <input class="ipt_text" name="menu_zhname" type="text" ms-duplex="@menu_zhname"
+				        ms-rules="{required:true}" data-required-message="名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">英文名称：
+				 </label>
+				 <input class="ipt_text" name="menu_enname" type="text" ms-duplex="@menu_enname"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">菜单代码：
+				 </label>
+				 <input class="ipt_text" name="menu_code" type="text" ms-duplex="@menu_code"
+				 		ms-rules="{sysMenu_addMenu_code:true}"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">所属项目：					   
+				 </label>
+				 <select name="item_prefix" class="ipt_select" ms-duplex="item_prefix" data-duplex-changed="@change_select()"
+				 	ms-rules="{sysMenu_addMenu_item:true}" style="position:absolute;">
+				 	<option ms-for="(index,el) in @menu_project" ms-attr="{value:el.project_value}">{{el.project_name}}</option>
+				 </select>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">父&nbsp;&nbsp;菜单：
+				 </label>
+				 <input class="ipt_text" name="parent_menuName" type="text" ms-duplex="@parent_menuName"  readonly="readonly"
+				 style="background-color:#F2F2F2;"/>
+				 <a href="javascript:void(0);" ms-click="@org_chose()" style="position:absolute;margin-left:330px;color:red;">点击选择</a>
+				 <span class="ipt_erro" style="margin-left:400px;"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">菜单路径：
+				 </label>
+				 <input class="ipt_text" name="menu_url" type="text" ms-duplex="menu_url"
+				 	    ms-rules="{required:true}" data-required-message="路径必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup" style="display:none;" id="sort_div">
+				 <label for="name">菜单排序：					   
+				 </label>
+				 <input class="ipt_text" name="menu_sort" type="text" ms-duplex="menu_sort" 
+				 	disabled="disabled" ms-rules="{number:true}"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">菜单样式：					   
+				 </label>
+				 <input class="ipt_text" name="menu_class" type="text" ms-duplex="menu_class"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">图标样式：					   
+				 </label>
+				 <input class="ipt_text" name="pic_class" type="text" ms-duplex="pic_class"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<!-- <div class="iptgroup">
+				 <label for="name">正在使用：
+				 </label>
+				 <input name="name" type="checkbox" ms-duplex-checked="@isdel"/>
+				 <div ms-class="['switch-checkbox',(@isdel?'switchOn':'')]" ms-click="@isdel=!@isdel"></div>
+				 <span class="ipt_erro"></span>
+			</div> -->
+			<a href="#" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="#" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

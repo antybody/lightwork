@@ -1,0 +1,66 @@
+
+[{
+	"code":"0",
+	"msg":"成功读取菜单源",
+	"data":[{
+		"username":"admin",
+		"menu_arr":[{
+			"menu_class":"none",
+			"pic_class":"icon_grounp icon_grounpab",
+			"pmenu_name":"系统管理",
+			"child_menu":[{
+				"menu_url":"#!/menu/menuManager/",
+				"cmenu_name":"菜单管理",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/user/userManager/",
+				"cmenu_name":"用户管理",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/bs/bsManager/",
+				"cmenu_name":"基础参数配置管理",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/query/queryManager/",
+				"cmenu_name":"查询条件配置",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/db/dbManager/",
+				"cmenu_name":"数据库配置",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/power/powerManager",
+				"cmenu_name":"权限资源管理",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/role/roleManager",
+				"cmenu_name":"角色管理",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/dic/dicManager/",
+				"cmenu_name":"字典管理",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/log/logManager/",
+				"cmenu_name":"日志管理",
+				"c_class":"icon_org"
+			}]
+		},{
+			"menu_class":"bga",
+			"pic_class":"icon_grounp icon_grounpbb",
+			"pmenu_name":"开发管理",
+			"child_menu":[{
+				"menu_url":"#!/cache/cacheManager/",
+				"cmenu_name":"缓存管理",
+				"c_class":"icon_org"
+			} ,{"menu_url":"#!/org/orgManager",
+				"cmenu_name":"组织机构管理",
+				"c_class":"icon_org"
+			},{
+				"menu_url":"#!/main",
+				"cmenu_name":"接口管理",
+				"c_class":"icon_org"
+			}]
+		}]
+	}]	
+}]

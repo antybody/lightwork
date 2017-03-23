@@ -1,0 +1,63 @@
+<style type="text/css">
+/*未选中样式*/
+#line_type a.level0 { text-align: center; display:block;  border:1px #ccc solid;font: 100 16px/30px 'microsoft yahei';}
+#line_type .level0{display: block; color:black;font-size:12px;word-spacing: 2px;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;margin-left:-1px;}
+
+/*选中样式*/
+#line_type a.level1 {background-color:#0080ff; text-align: center; display:block;  border:1px #0080ff solid;font: 100 16px/30px 'microsoft yahei';}
+#line_type .level1{display: block; color:white;font-size:12px;word-spacing: 2px;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;margin-left:-1px;}
+
+/*鼠标悬停时的样式*/
+#line_type .level0:hover{color:#0080ff;}
+</style>
+		<!-- 用户管理  -->
+<div class="right_comment">
+  <div class="right_main mt10">
+     <ul class="nav">
+		 <li><a href="#!/main">首页</a><span>></span></li>
+		 <li><a href="#!/user/userManager">用户管理</a><span>></span></li>
+		 <li>用户角色权限浏览</li>
+	 </ul>
+	 
+      <div class="panel panel_over user_search" style="padding-bottom:50px">
+      	<div ms-controller="user_role_show">
+      		<div style="margin:10px;">
+      			用户名:{{@user_name}}   &nbsp;&nbsp;&nbsp; 账号:{{@user_code}}
+      		</div>
+           <fieldset style="border:1px solid #ccc;padding:15px;margin:10px;">
+    		<legend>角色</legend>
+  			
+           <div style="width:90%;float:left;" id="line_type">
+           	
+           	<div id="roleShow">
+           	</div>
+           	<ul>
+           		<li style="float:left;" ms-for="($index,el) in @roleArr" ms-html="el" ms-click="@changeShow">
+           		</li>
+           	</ul>
+           
+		   </div>
+		   </fieldset>
+      	</div>
+      		
+           <fieldset style="border:1px solid #ccc;padding:15px;margin:10px;">
+    		<legend>菜单权限</legend>
+    		<div class="list_table"  ms-controller="user_role_menu"> <!-- 查询列表 -->
+                   <wbr ms-widget="{is:'ms-tablelist',columns:@gridEnColumns,zcolumns:@gridZhColumns,data:@gridData}" />
+            </div>
+    	   </fieldset>
+    	   
+    	   <fieldset style="border:1px solid #ccc;padding:15px;margin:10px;">
+    		<legend>接口访问</legend>
+    		<div class="list_table"  ms-controller="user_role_inter"> <!-- 查询列表 -->
+                   <wbr ms-widget="{is:'ms-tablelist',columns:@inteEnColumns,zcolumns:@inteZhColumns,data:@inteData}" />
+            </div>
+    	   </fieldset>
+    	   
+    	   	<a href="#" onclick="JavaScript:history.back(-1);" class="btn_fun btn_user">返回</a>
+    	   
+      </div>
+      
+  </div>
+</div>
+		

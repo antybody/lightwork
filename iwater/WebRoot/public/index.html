@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8">
+	<title>Lightwork平台管理界面</title>
+	<link rel="icon" href="images/favicon.ico"> <link>
+	<link rel="stylesheet" type="text/css" href="css/lightwork.css" />
+	<link rel="stylesheet" type="text/css" href="public/core/css/import/quartz.css" />
+	<link rel="stylesheet" type="text/css" href="public/core/css/import/chosen.css" />
+	<script type="text/javascript" src="public/core/javascripts/import/promise.js"></script>
+	<script data-main="public/iwater/config/mainConfig.js" src="public/core/javascripts/import/require.min.js"></script>
+	<style type="text/css">
+		.ms-controller{
+		 visibility:hidden
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap ms-controller" ms-controller="index_controller" >
+	    <!-- 后台模板的头部信息 -->
+		<div class="head">
+			<span class="list_logo"><a class="list_menu"></a></span>
+			<span class="welcome">欢迎{{username}}使用LightWork便捷平台！</span>
+			<ul>
+				<li class="s_btn"><a href="./logout"></a></li>
+				<li class="m_btn"><a href="#"></a></li>
+			</ul>
+		</div>
+		<!-- 后台模板的内容页  -->	
+		<div class="content">
+			<div class="left_list" id="left_menu"><!-- 左侧的菜单信息,修改成从数据库读取的-->
+				<ul>
+					<li ms-for="el in @menu_arr">
+						<span><a href="#" ms-class="el.menu_class" ms-click="@showOrHide"><strong :class="el.pic_class"></strong>{{el.pmenu_name}}</a></span>
+						<ul>
+							<li ms-for="elm in el.child_menu"><a ms-attr="{href:elm.menu_url}" ms-click="@clickChange">{{elm.cmenu_name}}</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<!-- 修改从数据库读取，并做路由分发 -->
+			<div class="content_wrap" ms-html="@content_page">
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

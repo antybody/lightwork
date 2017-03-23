@@ -1,0 +1,80 @@
+<div class="right_comment">
+<div class="right_main mt10" >
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/query/queryManager">查询条件配置</a></li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-controller="query_form">
+		    <div class="iptgroup">
+				 <label   style="width:200px;" >页面代码：
+				 </label>
+				 <input class="ipt_text"   name="query_name" type="text" />
+				 <a href="javascript:;"  style="position: absolute;   margin-left: 350px;"  class=" btn_query" ms-click="@read_query"><span class="btn_query_span">读取已有配置</span></a>
+			</div>
+			<div class="iptgroup">
+				 <label   style="width:200px;" >地址类型：
+				 </label>
+				 <select name="addr_type" class="ipt_select" ><option value="1">system</option><option value="2">业务系统</option></select>
+				
+			</div>
+			<div style="border:1px solid #ddd;padding:15px;margin: 10px 150px 10px 150px;">
+			<div class="iptgroup2">
+				 <label   style="width:200px;" >条件类型：
+				 </label>
+				 <select name="query_type" class="ipt_select" ms-duplex="query_type"><option value="0">输入框</option><option value="1">日历框</option><option value="2">数字字典</option></select>
+
+			</div>
+			<div class="iptgroup2">
+				 <label   style="width:200px;" >条件名称：
+				 </label>
+				 <input class="ipt_text"   name="zh_name" type="text" ms-duplex="zh_name"/>
+			</div>
+			
+			<div class="iptgroup2">
+				 <label   style="width:200px;" >字典代号：
+				 </label>
+				 <input class="ipt_text"   name="parent_code" type="text" ms-duplex="parent_code"/>
+			</div>
+			
+			<div class="iptgroup2">
+				 <label   style="width:200px;" >是否显示更多：					   
+				 </label>
+				 <select name="isShowMore" class="ipt_select" ms-duplex="isShowMore"><option value="1">是</option><option value="2">否</option></select>
+			</div>
+			<div class="iptgroup2">
+				 <label   style="width:200px;" >对应数据库字段：					   
+				 </label>
+				 <input class="ipt_text"   name="en_name" type="text" ms-duplex="en_name"/>
+			</div>
+			 <div class="iptgroup2">
+				 <label   style="width:200px;" >默认是否选中：
+				 </label>
+				 <select name="isChecked" class="ipt_select" ms-duplex="isChecked"><option value="1">是</option><option value="2">否</option></select>
+			</div>
+			</div>
+					<a href="javascript:;"   class=" btn_query" ms-click="@add_query"><span class="btn_query_span">添加</span></a>
+			<fieldset style="border:1px solid #ddd;padding:15px;margin: 10px 150px 10px 150px;">
+    		<legend>条件显示区</legend>
+    		<div class="list_table1"> <!-- 查询列表 -->
+    		<ul>
+    		<li class="query_li_query"><a ms-click="@query_query_query" href="javascript:;" class="query_query">条件1</a><img src="./images/cancel.png" title="删除" class="query_img_del" ms-click="@del_query"/></li>
+    		<li class="query_li_query"><a ms-click="@query_query_query" href="javascript:;" class="query_query">条件2</a><img src="./images/cancel.png" title="删除" class="query_img_del" ms-click="@del_query"/></li>
+    		<li class="query_li_query"><a ms-click="@query_query_query" href="javascript:;" class="query_query">条件3</a><img src="./images/cancel.png" title="删除" class="query_img_del" ms-click="@del_query"/></li>
+    		<li class="query_li_query"><a ms-click="@query_query_query" href="javascript:;" class="query_query">条件3</a><img src="./images/cancel.png" title="删除" class="query_img_del" ms-click="@del_query"/></li>
+            </ul>
+            </div>
+    	   </fieldset>
+    	   			<a href="javascript:;"   class=" btn_query" ms-click="@view_query"><span class="btn_query_span">预览</span></a>
+    	   			<a href="javascript:;"   class=" btn_query" ms-click="@to_json"><span class="btn_query_span">生成JSON文件</span></a>
+    	   
+    	   <fieldset style="border:1px solid #ddd;padding:15px;margin: 10px 150px 10px 150px;">
+    		<legend>条件预览</legend>
+    		<div class="list_table2"> <!-- 查询列表 -->
+    		
+            </div>
+    	   </fieldset>
+		</form>
+    </div>
+</div>
+</div>

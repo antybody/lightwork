@@ -1,0 +1,28 @@
+<!-- 菜单管理  -->
+<div class="right_comment">
+  <div class="right_main mt10">
+     <ul class="nav">
+		 <li><a href="#!/main">首页</a><span>></span></li>
+		 <li>菜单管理</li>
+	 </ul>
+      <div class="panel panel_over user_search" style="padding-bottom:20px">
+           <div class="search_content">
+                <div ms-controller="menu_query">  <!-- 查询条件 -->
+                      <wbr ms-widget="{is:'ms-menuselect',menu: @menu,queryList:@queryList,clearAll:@clearAll}" />                      
+                
+                <div class="midiv">   <!-- 输出信息 -->
+                     <span>符合查询条件的数量：<strong>{{@totalCount}}</strong>条</span>
+					 <a class="btn_download" href="javascript:void(0);" ms-click="@downloadMenu()">导出菜单</a>
+					 <a class="btn_adduser" href="#!/menu/addMenu?type=add">新增菜单</a>
+                </div>
+                </div>
+                <div class="list_table" ms-controller="menu_list"> <!-- 查询列表 -->
+                   <wbr ms-widget="{is:'ms-tablelist',columns:@gridEnColumns,zcolumns:@gridZhColumns,data:@gridData,isHandle:@isHandle,handleData:@handleData,cbProxy:@cbProxy}" />
+                </div>
+                <div class="pager" ms-controller="menu_pager"> <!-- 翻页-->
+                      <wbr ms-widget="{is:'ms-pager',totalPages:@totalPages,showPages:@showPages,onPageClick:@onPageClick,currentPage:@currentPage}" />
+                </div>
+           </div>
+      </div>
+  </div>
+</div>

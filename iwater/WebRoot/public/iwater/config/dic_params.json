@@ -1,0 +1,31 @@
+[{
+	"code": "0",
+	"msg": "成功读取查询条件",
+	"data": [{
+		"text": "自定义查询",
+		"isopen": "false",
+		"type": "self",
+		"num": "2",
+		"ismore": false,
+		"ismoreselect": "0",
+		"subQuery": [{
+			"text": "节点名称",
+			"columnkey": "dic_name",
+			"subtype": "input",
+			"columnval": "",
+			"subformat": ""
+		},{
+			"text": "节点编码",
+			"columnkey": "dic_code",
+			"subtype": "input",
+			"columnval": "",
+			"subformat": ""
+		},{
+			"text": "父节点编码",
+			"columnkey": "parent_code",
+			"subtype": "input",
+			"columnval": "",
+			"subformat": ""
+		}]
+	}]
+}]

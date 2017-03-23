@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.user.dao.UserMapper">
+	<cache eviction="LRU"  type="com.baosight.iwater.define.RedisCache" />
+	<resultMap id="BaseResultMap" type="com.baosight.iwater.system.user.pojo.User">
+		<id column="ui_id" property="ui_id" jdbcType="VARCHAR" />
+		<result column="add_date" property="add_date" jdbcType="VARCHAR" />
+		<result column="up_date" property="up_date" jdbcType="VARCHAR" />
+		<result column="user_info" property="user_info" jdbcType="VARCHAR" />
+		<result column="user_code" property="user_code" jdbcType="VARCHAR" />
+		<result column="user_pwd" property="user_pwd" jdbcType="VARCHAR" />
+		<result column="user_name" property="user_name" jdbcType="VARCHAR" />
+		<result column="user_mail" property="user_mail" jdbcType="VARCHAR" />
+		<result column="user_tel" property="user_tel" jdbcType="VARCHAR" />
+		<result column="user_phone" property="user_phone" jdbcType="VARCHAR" />
+		<result column="user_post"  property="user_post" jdbcType="VARCHAR"/>
+		<result column="del_modified" property="del_modified" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 通过sql片段实现代码复用 -->
+	<sql id="Base_Column_List">
+		ui_id,add_date,up_date,user_info,user_code,user_pwd,user_name,
+		user_mail,user_tel,user_phone,user_post,del_modified
+	</sql>
+	
+	<!-- 根据主键 查询(没有进行逻辑删除的)对象 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+		and del_modified=1
+	</select>
+	
+	<!-- 唯一性校验 (新增 或者 修改使用)-->
+	<select id="checkOnly" resultType="java.lang.Integer" parameterType="com.baosight.iwater.system.user.pojo.User">
+		select count(*) as count from sys_user 
+		where 1=1
+		<if test="user_code != null and user_code != '' ">
+		    and user_code= #{user_code,jdbcType=VARCHAR}
+		</if>
+		<if test="ui_id != null and ui_id != '' ">
+			and ui_id != #{ui_id,jdbcType=VARCHAR}
+        </if>
+	</select>
+	
+	<!-- 逻辑删除 记录操作时间-->
+	<delete id="deleteByPrimaryKey" parameterType="com.baosight.iwater.system.user.pojo.User">
+		<!--  
+		delete from sys_org
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+		-->
+		update sys_user set del_modified=2,up_date=#{up_date,jdbcType=VARCHAR},user_info=#{user_info,jdbcType=VARCHAR} 
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 添加数据 初始添加时间 -->
+	<insert id="insert" parameterType="com.baosight.iwater.system.user.pojo.User">
+		insert into sys_user (
+		<include refid="Base_Column_List" />
+		)values (#{ui_id,jdbcType=VARCHAR},
+		#{add_date,jdbcType=VARCHAR},
+		null,
+		#{user_info,jdbcType=VARCHAR},
+		#{user_code,jdbcType=VARCHAR},
+		#{user_pwd,jdbcType=VARCHAR},
+		#{user_name,jdbcType=VARCHAR},
+		#{user_mail,jdbcType=VARCHAR},
+		#{user_tel,jdbcType=VARCHAR},
+		#{user_phone,jdbcType=VARCHAR},
+		#{user_post,jdbcType=VARCHAR},
+		1)
+	</insert>
+	
+	<!-- 查询用户 所属组织机构 -->
+	<select id="sel_user_org" parameterType="java.lang.String" resultType="com.baosight.iwater.system.user.pojo.RelUserOrg">
+		select s.del_modified,g.gmt_date,g.org_code,g.user_code,s.org_zhname 
+		from rel_user_org g  left join sys_org  s
+		on s.org_code=g.org_code	
+		where g.user_code=#{user_code,jdbcType=VARCHAR} and g.del_modified=1 and s.del_modified=1
+	</select>
+	
+	<!-- 查询用户 角色 -->
+	<select id="sel_user_role" parameterType="java.lang.String" resultType="com.baosight.iwater.system.user.pojo.RelUserRole">
+		select s.is_del,g.gmt_date,g.role_code,g.user_code,s.role_zhname
+ 		from rel_user_role g left join sys_role s
+		on g.role_code=s.role_code
+		where g.user_code=#{user_code,jdbcType=VARCHAR} and g.del_modified=1 and s.is_del=1
+	</select>
+	
+	<!-- 添加 用户组织机构关系 -->
+	<insert id="insertUserOrg" parameterType="com.baosight.iwater.system.user.pojo.RelUserOrg">
+		insert into rel_user_org
+		(user_code,org_code,del_modified,gmt_date)
+		values (
+		#{user_code,jdbcType=VARCHAR},
+		#{org_code,jdbcType=VARCHAR},
+		1,
+		#{gmt_date,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 删除 用户组织机构关系 -->
+	<delete id="del_user_org" parameterType="com.baosight.iwater.system.user.pojo.RelUserOrg">
+		update rel_user_org set del_modified=2,
+		gmt_date=#{gmt_date,jdbcType=VARCHAR} where user_code = #{user_code,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 删除 用户角色关系 -->
+	<delete id="del_user_role" parameterType="com.baosight.iwater.system.user.pojo.RelUserRole">
+		update rel_user_role set del_modified=2,
+		gmt_date=#{gmt_date,jdbcType=VARCHAR} where user_code = #{user_code,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 添加 用户角色关系 -->
+	<insert id="insertUserRole" parameterType="com.baosight.iwater.system.user.pojo.RelUserRole">
+		insert into rel_user_role
+		(user_code,role_code,del_modified,gmt_date)
+		values(
+		#{user_code,jdbcType=VARCHAR},
+		#{role_code,jdbcType=VARCHAR},
+		1,
+		#{gmt_date,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 oracle-->
+	<select id="findAllOrcl" resultType="com.baosight.iwater.system.user.pojo.User" parameterType="java.util.Map">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		select 
+		s.ui_id,s.add_date,s.up_date,s.user_info,s.user_code,s.user_pwd,s.user_name,
+		s.user_mail,s.user_tel,s.user_phone,s.del_modified
+ 		from sys_user s
+		where 1=1 
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 分页条件查询 (没有进行逻辑删除的)数据 mysql-->
+	<select id="findAllSql" resultType="com.baosight.iwater.system.user.pojo.User" parameterType="java.util.Map">
+		select 
+		s.ui_id,s.add_date,s.up_date,s.user_info,s.user_code,s.user_pwd,s.user_name,
+		s.user_mail,s.user_tel,s.user_phone,s.del_modified
+ 		from sys_user s
+		where 1=1  
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+         <if test="excel_flag == null">
+		 limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<!-- 分页查询(没有进行逻辑删除的)总记录数 -->
+	<select id="findAllSize" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+		count(*)
+ 		from sys_user s
+		where 1=1 
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+	</select>
+	
+	<!-- 修改(没有进行逻辑删除的)数据 -->
+	<update id="updateByPrimaryKey" parameterType="com.baosight.iwater.system.organization.pojo.Organization">
+		update sys_user set
+		up_date=#{up_date,jdbcType=VARCHAR},
+		user_info=#{user_info,jdbcType=VARCHAR},
+		user_pwd=#{user_pwd,jdbcType=VARCHAR},
+		user_name=#{user_name,jdbcType=VARCHAR},
+		user_mail=#{user_mail,jdbcType=VARCHAR},
+		user_tel=#{user_tel,jdbcType=VARCHAR},
+		user_phone=#{user_phone,jdbcType=VARCHAR},
+		user_post=#{user_post,jdbcType=VARCHAR}
+		where ui_id=#{ui_id,jdbcType=VARCHAR}
+		and del_modified=1
+	</update>
+</mapper>

@@ -1,0 +1,28 @@
+<!-- 菜单管理  -->
+<div class="right_comment">
+  <div class="right_main mt10">
+     <ul class="nav">
+		 <li><a href="#!/main">首页</a><span>></span></li>
+		 <li>缓存管理</li>
+	 </ul>
+      <div class="panel panel_over user_search" style="padding-bottom:20px">
+           <div class="search_content">
+                <div ms-controller="cache_query_cache">  <!-- 查询条件 -->
+                      <wbr ms-widget="{is:'ms-menuselect',menu: @menu,queryList:@queryList,clearAll:@clearAll}" />                      
+                
+                <div class="midiv">   <!-- 输出信息 -->
+                     <span>符合查询条件的数量：<strong>{{@totalCount}}</strong>条</span>
+					 <a class="btn_download" href="javascript:void(0);" ms-click="@downloadCache()">导出任务</a>
+					 <a class="btn_adduser" href="#!/cache/addCache?type=add">新增缓存</a>
+                </div>
+                </div>
+                <div class="list_table" ms-controller="cache_list_cache"> <!-- 查询列表 -->
+                   <wbr ms-widget="{is:'ms-tablelist',columns:@gridEnColumns,zcolumns:@gridZhColumns,data:@gridData,isHandle:@isHandle,handleData:@handleData,cbProxy:@cbProxy}" />
+                </div>
+                 <div class="pager" ms-controller="cache_pager_cache"> <!-- 翻页-->
+                      <wbr ms-widget="{is:'ms-pager',totalPages:@totalPages,showPages:@showPages,onPageClick:@onPageClick,currentPage:@currentPage}" />
+                </div>
+           </div>
+      </div>
+  </div>
+</div>

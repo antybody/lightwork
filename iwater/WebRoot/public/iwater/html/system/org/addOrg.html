@@ -1,0 +1,63 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="org_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/org/orgManager">组织机构管理</a>></li>
+		<li>{{@org_type}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+		    <div class="iptgroup">
+				 <label for="name" style="width:100px;">机构中文名称：
+				 </label>
+				 <input class="ipt_text" name="org_zhname" type="text" ms-duplex="@org_zhname"
+				        ms-rules="{required:true}" data-required-message="名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name" style="width:100px;">机构英文名称：
+				 </label>
+				 <input class="ipt_text" name="org_enname" type="text" ms-duplex="@org_enname"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name" style="width:100px;">机构地址：
+				 </label>
+				 <input class="ipt_text" name="org_url" type="text" ms-duplex="@org_url"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name" style="width:100px;">父机构：					   
+				 </label>
+				 <select name="org_parent" id="org_parent" class="ipt_select" ms-duplex="org_parent" >
+				 	<option ms-for="(index,el) in @org_project" ms-attr="{value:el.project_value}">{{el.project_name}}</option>
+				 </select>
+				 <span class="ipt_erro"></span>
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name" style="width:100px;">机构代码：
+				 </label>
+				 <input class="ipt_text" name="org_code" type="text" ms-duplex="@org_code"
+				 	    ms-rules="{sysOrg_addOrg_code:true}" data-required-message="机构代码必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			
+			<div class="iptgroup">
+				 <label for="name" style="width:100px;">机构缩写：					   
+				 </label>
+				 <input class="ipt_text" name="org_shortname" type="text" ms-duplex="@org_shortname"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name" style="width:100px;">机构排序：					   
+				 </label>
+				 <input class="ipt_text" name="org_sort" type="text" ms-duplex="@org_sort"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<a href="#" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="#" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

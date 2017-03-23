@@ -1,0 +1,23 @@
+﻿博文：http://blog.csdn.net/miklechun/article/details/50246217
+
+运行下面的sql:
+
+begin  
+   for t in (select table_name tn from user_tables where table_name <> upper(table_name)) loop  
+       begin  
+          for c in (select column_name cn from user_tab_columns where table_name=t.tn) loop  
+              begin  
+                 execute immediate 'alter table "'||t.tn||'" rename column "'||c.cn||'" to '||c.cn;  
+              exception  
+                 when others then  
+                    dbms_output.put_line(t.tn||'.'||c.cn||'已经存在');  
+              end;  
+          end loop;  
+        
+          execute immediate 'alter table "'||t.tn||'" rename to '||t.tn;  
+          exception  
+             when others then  
+                dbms_output.put_line(t.tn||'已存在');  
+       end;  
+   end loop;   
+end;  

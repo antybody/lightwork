@@ -1,0 +1,18 @@
+ <span>
+     <div ms-for="(index,el) in @menu | filterBy(@filter,'self','type')">
+		<span class="f_name">{{el.text}}：</span>
+		<strong  ms-visible="el.ismore" ms-click="@openMenu(el)">更多</strong>
+		<ul>
+		 <li ms-for="elm in el.subQuery | filterBy(@filter,'input','subtype')"><span>{{elm.text}}：<input type="text"></span></li>
+		 <li ms-for="elm in el.subQuery | filterBy(@filter,'time','subtype')"><span>{{elm.text}}：<input type="text"></span></li>
+		</ul>
+     </div>
+　           <div ms-for="(index,el) in @menu | filterBy(@filter,'db','type')">									    
+	   <span class="f_name">{{el.text}}：</span>
+	    <strong :class="el.isopen" ms-visible="el.ismore" ms-click="@openMenu(el)">更多</strong>
+	    <ul class="list_common">
+	    <li ms-for="elm in el.subQuery"><input ms-visible="el.ismoreselect" type="checkbox"><a href="javascript:void(0);" ms-attr="{'data-key':elm.columnkey,'data-val':elm.columnval}">{{elm.text}}</a></li>
+	    </ul>
+        </div>
+        <div class="last"> <div style="text-align:right;color:#118ecc"><span ms-click="@queryListExpand =!@queryListExpand" ms-text="@queryListExpand ? '【收起条件】' : '【更多条件】'"></span><span>【搜索】</span><span>【清空全部】</span></div></div>
+</span>

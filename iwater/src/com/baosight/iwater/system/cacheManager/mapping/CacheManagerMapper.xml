@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.cacheManager.dao.CacheManagerMapper">
+	<cache eviction="LRU"  type="com.baosight.iwater.define.RedisCache" />
+	<sql id="Base_Column_List">
+		cache_id as "cache_id",
+		add_date as "add_date",
+		up_date as "up_date",
+		user_info as "user_info",
+		cache_menu as "cache_menu",
+		cache_menu_id as "cache_menu_id",
+		cache_package as "cache_package",
+		cache_role as "cache_role",
+		cache_idname as "cache_idname",
+		cache_type as "cache_type",
+		cache_rate as "cache_rate",
+		rate_name as "rate_name",
+		cache_refreshtime as "cache_refreshtime",
+		cache_modified as "cache_modified",
+		cache_state as "cache_state"
+	</sql>
+	<select id="findAllSize" resultType="java.lang.Integer" useCache="false" parameterType="java.util.Map">
+		SELECT  count(*)
+		 		from sys_cache where 1=1
+		 <if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+	</select>
+	<select id="findAllFlushCache" resultType="java.util.HashMap" useCache="true" flushCache="true"  >
+			SELECT  cache_id as "cache_id",
+				add_date as "add_date",
+				up_date as "up_date",
+				user_info as "user_info",
+				cache_menu as "cache_menu",
+				cache_menu_id as "cache_menu_id",
+				cache_package as "cache_package",
+				cache_role as "cache_role",
+				cache_idname as "cache_idname",
+				cache_type as "cache_type",
+				cache_rate as "cache_rate",
+				rate_name as "rate_name",
+				cache_refreshtime as "cache_refreshtime",
+				cache_modified as "cache_modified",
+				cache_state as "cache_state"
+		 		from sys_cache where cache_modified='1'
+	</select>
+	
+	<!-- orcl 分页条件查询 -->
+	<select id="orclFindAllFlushCacheTest" resultType="java.util.HashMap" useCache="false"  parameterType="java.util.Map">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		SELECT  cache_id as "cache_id",
+				add_date as "add_date",
+				up_date as "up_date",
+				user_info as "user_info",
+				cache_menu as "cache_menu",
+				cache_menu_id as "cache_menu_id",
+				cache_package as "cache_package",
+				cache_role as "cache_role",
+				cache_idname as "cache_idname",
+				cache_type as "cache_type",
+				cache_rate as "cache_rate",
+				rate_name as "rate_name",
+				cache_refreshtime as "cache_refreshtime",
+				cache_modified as "cache_modified",
+				cache_state as "cache_state"
+		 from sys_cache where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<select id="findAllFlushCacheTest" resultType="java.util.HashMap" useCache="false"  parameterType="java.util.Map">
+		SELECT  cache_id as "cache_id",
+				add_date as "add_date",
+				up_date as "up_date",
+				user_info as "user_info",
+				cache_menu as "cache_menu",
+				cache_menu_id as "cache_menu_id",
+				cache_package as "cache_package",
+				cache_role as "cache_role",
+				cache_idname as "cache_idname",
+				cache_type as "cache_type",
+				cache_rate as "cache_rate",
+				rate_name as "rate_name",
+				cache_refreshtime as "cache_refreshtime",
+				cache_modified as "cache_modified",
+				cache_state as "cache_state"
+		 		from sys_cache where 1=1
+		 <if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+        <if test="excel_flag == null">
+		 	limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="findAll" resultType="java.util.HashMap" >
+				SELECT <include refid="Base_Column_List" /> from sys_cache where cache_modified='1'
+	</select>  
+		<!-- 根据主键 查询(没有进行逻辑删除的)对象 -->
+	<select id="selectByPrimaryKey" resultType="java.util.HashMap"  useCache="false" 
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_cache
+		where cache_id = #{cache_id,jdbcType=VARCHAR}
+		and cache_modified=1
+	</select>
+	<insert id="save" parameterType="Map" flushCache="false">
+		insert into sys_cache(cache_id,add_date,up_date,user_info,cache_menu,cache_menu_id,cache_package,cache_role,cache_idname,cache_type,cache_state,cache_rate,cache_refreshtime,rate_name,cache_modified) 
+		values(
+				#{cache_id,jdbcType=VARCHAR},
+				#{add_date,jdbcType=VARCHAR},
+				#{up_date,jdbcType=VARCHAR},
+				#{user_info,jdbcType=VARCHAR},
+				#{cache_menu,jdbcType=VARCHAR},
+				#{cache_menu_id,jdbcType=VARCHAR},
+				#{cache_package,jdbcType=VARCHAR},
+				#{cache_role,jdbcType=VARCHAR},
+				#{cache_idname,jdbcType=VARCHAR},
+				#{cache_type,jdbcType=VARCHAR},
+				#{cache_state,jdbcType=VARCHAR},   
+				#{cache_rate,jdbcType=VARCHAR},
+				#{cache_refreshtime,jdbcType=VARCHAR},
+				#{rate_name,jdbcType=VARCHAR},   
+				'1'
+			)
+	</insert>
+	<update id="updateById"  parameterType="Map"  flushCache="false">
+		update 	sys_cache 
+		<trim prefix="set" suffixOverrides=",">
+  			<if test="up_date!=null">up_date=#{up_date,jdbcType=VARCHAR},</if>
+  			<if test="user_info!=null">user_info=#{user_info,jdbcType=VARCHAR},</if>
+  			<if test="cache_menu!=null">cache_menu=#{cache_menu,jdbcType=VARCHAR},</if>
+  			<if test="cache_menu_id!=null">cache_menu_id=#{cache_menu_id,jdbcType=VARCHAR},</if>
+  			<if test="cache_package!=null">cache_package=#{cache_package,jdbcType=VARCHAR},</if>
+  			<if test="cache_role!=null">cache_role=#{cache_role,jdbcType=VARCHAR},</if>
+  			<if test="cache_idname!=null">cache_idname=#{cache_idname,jdbcType=VARCHAR},</if>
+  			<if test="cache_type!=null">cache_type=#{cache_type,jdbcType=VARCHAR},</if>
+  			<if test="cache_rate!=null">cache_rate=#{cache_rate,jdbcType=VARCHAR},</if>
+  			<if test="rate_name!=null">rate_name=#{rate_name,jdbcType=VARCHAR},</if>
+ 		</trim>
+		  where cache_id=#{cache_id}
+	</update>
+	<update id="updateRefreshTime"  parameterType="Map"  flushCache="false">
+		update 	sys_cache 
+		<trim prefix="set" suffixOverrides=",">
+  			<if test="cache_refreshtime!=null">cache_refreshtime=#{cache_refreshtime,jdbcType=VARCHAR},</if>
+ 		</trim>
+		  where cache_id=#{cache_id}
+	</update>
+	<delete id="deleteById" parameterType="Map"  flushCache="false"> 
+		update sys_cache set 
+				up_date=#{up_date,jdbcType=VARCHAR},
+				user_info=#{user_info,jdbcType=VARCHAR},
+				cache_modified='0'
+		  where cache_id=#{cache_id,jdbcType=VARCHAR}
+	</delete>
+</mapper>

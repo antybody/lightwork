@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.organization.dao.OrganizationMapper">
+	
+	<!-- 这里进行备注  mybatis中含有具体的类一定要验证是否正确  ctrl alt -->
+	<resultMap id="BaseResultMap" type="com.baosight.iwater.system.organization.pojo.Organization">
+		<id column="ui_id" property="ui_id" jdbcType="VARCHAR" />
+		<result column="add_date" property="add_date" jdbcType="VARCHAR" />
+		<result column="up_date" property="up_date" jdbcType="VARCHAR" />
+		<result column="user_info" property="user_info" jdbcType="VARCHAR" />
+		<result column="gmt_modified" property="gmt_modified" jdbcType="VARCHAR" />
+		<result column="org_zhname" property="org_zhname" jdbcType="VARCHAR" />
+		<result column="org_enname" property="org_enname" jdbcType="VARCHAR" />
+		<result column="org_url" property="org_url" jdbcType="VARCHAR" />
+		<result column="org_parent" property="org_parent" jdbcType="VARCHAR" />
+		<result column="org_code" property="org_code" jdbcType="VARCHAR" />
+		<result column="org_shortname" property="org_shortname" jdbcType="VARCHAR" />
+		<result column="org_sort" property="org_sort" jdbcType="VARCHAR" />
+		<result column="del_modified" property="del_modified" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 通过sql片段实现代码复用 -->
+	<sql id="Base_Column_List">
+		ui_id,add_date,up_date,user_info,gmt_modified,org_zhname,org_enname,
+		org_url,org_parent,org_code,org_shortname,org_sort,del_modified
+	</sql>
+	
+	<!-- 根据主键 查询(没有进行逻辑删除的)对象 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_org
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+		and del_modified=1
+	</select>
+	<select id="findAllItem2" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />  
+		from sys_org
+		where del_modified=1 
+		 order by org_sort
+	</select>
+	<!-- 逻辑删除 记录操作时间-->
+	<delete id="deleteByPrimaryKey" parameterType="com.baosight.iwater.system.organization.pojo.Organization">
+		<!--  
+		delete from sys_org
+		where ui_id = #{ui_id,jdbcType=VARCHAR}
+		-->
+		update sys_org set del_modified=2,up_date=#{up_date,jdbcType=VARCHAR} where ui_id = #{ui_id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 添加数据 初始添加时间 -->
+	<insert id="insert" parameterType="com.baosight.iwater.system.organization.pojo.Organization">
+		insert into sys_org (
+		<include refid="Base_Column_List" />
+		)values (#{ui_id,jdbcType=VARCHAR},
+		#{add_date,jdbcType=VARCHAR},
+		null,
+		#{user_info,jdbcType=VARCHAR},
+		#{gmt_modified,jdbcType=VARCHAR},
+		#{org_zhname,jdbcType=VARCHAR},
+		#{org_enname,jdbcType=VARCHAR},
+		#{org_url,jdbcType=VARCHAR},
+		#{org_parent,jdbcType=VARCHAR},
+		#{org_code,jdbcType=VARCHAR},
+		#{org_shortname,jdbcType=VARCHAR},
+		#{org_sort,jdbcType=VARCHAR},
+		1)
+	</insert>
+	
+	<!-- 查询所有(没有进行逻辑删除的)数据 -->
+	<select id="selectAll" resultType="com.baosight.iwater.system.organization.pojo.Organization">
+		select
+		<include refid="Base_Column_List" />  
+		from sys_org
+		where del_modified=1 
+	</select>
+	
+	<!-- 分页条件查询 oracle -->
+	<select id="findAllOrcl" resultType="com.baosight.iwater.system.organization.pojo.Organization" parameterType="java.util.Map">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		SELECT * FROM sys_org u where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+		order by (u.org_sort+0) asc
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 分页条件查询 mysql -->
+	<select id="findAllSql" resultType="com.baosight.iwater.system.organization.pojo.Organization" parameterType="java.util.Map">
+		SELECT * FROM sys_org u where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if> 
+        order by (u.org_sort+0) asc
+        limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 分页查询 (没有进行逻辑删除的)数据-->
+	<select id="findAll" resultType="com.baosight.iwater.system.organization.pojo.Organization" parameterType="java.util.Map">
+		select <include refid="Base_Column_List" />  from (
+		select
+		<include refid="Base_Column_List" /> 
+		from sys_org
+		where del_modified=1 
+		<if test="org_zhname != null and org_zhname!= '' ">
+			and org_zhname like CONCAT('%', #{org_zhname}, '%') 
+        </if>
+        <if test="org_parent != null and org_parent!= '' ">
+			and (org_parent like CONCAT('%', #{org_parent}, '%') or ui_id like CONCAT('%', #{org_parent}, '%')) 
+        </if>
+		 <if test="org_parent != null and org_parent!= '' ">
+UNION ALL
+		
+		select
+		*
+		from sys_org
+		where del_modified=1 and org_parent in (
+			select
+			ui_id
+			from sys_org
+			where del_modified=1 
+			
+				and org_parent like CONCAT('%', #{org_parent}, '%')  
+			
+		)
+UNION ALL
+		
+		select
+		*
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+					ui_id
+					from sys_org
+					where del_modified=1 and org_parent in (
+						select
+					ui_id
+					from sys_org 
+					where del_modified=1 
+					and org_parent like CONCAT('%', #{org_parent}, '%')  
+			)
+		)
+UNION ALL
+
+		select
+		*
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+		ui_id
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+					ui_id
+					from sys_org
+					where del_modified=1 and org_parent in (
+						select
+					ui_id
+					from sys_org 
+					where del_modified=1 
+					and org_parent like CONCAT('%', #{org_parent}, '%')  
+			)
+		)
+		)
+UNION ALL
+
+	select
+		*
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+		ui_id
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+		ui_id
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+					ui_id
+					from sys_org
+					where del_modified=1 and org_parent in (
+						select
+					ui_id
+					from sys_org 
+					where del_modified=1 
+					and org_parent like CONCAT('%', #{org_parent}, '%')  
+			)
+		)
+		)
+		)
+UNION ALL
+select
+		*
+		from sys_org
+		where del_modified=1 and org_parent in (
+	select
+		ui_id
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+		ui_id
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+		ui_id
+		from sys_org
+		where del_modified=1 and org_parent in (
+				select
+					ui_id
+					from sys_org
+					where del_modified=1 and org_parent in (
+						select
+					ui_id
+					from sys_org 
+					where del_modified=1 
+					and org_parent like CONCAT('%', #{org_parent}, '%')  
+			)
+		)
+		)
+		))
+		</if>
+		) as table1 order by table1.org_sort
+		limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 唯一性校验 (新增 或者 修改使用)-->
+	<select id="checkOnly" resultType="java.lang.Integer" parameterType="com.baosight.iwater.system.organization.pojo.Organization">
+		select count(*) as count from sys_org
+		where 1=1
+		<if test="org_code != null and org_code != '' ">
+		    and org_code= #{org_code,jdbcType=VARCHAR}
+		</if>
+		<if test="ui_id != null and ui_id != '' ">
+			and ui_id != #{ui_id,jdbcType=VARCHAR}
+        </if>
+	</select>
+	
+	<select id="findAllItem" resultType="java.util.HashMap">
+		select
+		ui_id as "ui_id", add_date as "add_date", up_date as "up_date",
+		user_info as "user_info", gmt_modified as "gmt_modified", org_zhname as "org_zhname",
+		org_enname as "org_enname", org_url as "org_url", org_parent as "org_parent",
+		org_code as "org_code", org_shortname as "org_shortname", org_sort as "org_sort", del_modified as "del_modified"
+		from sys_org
+		where del_modified=1 
+	</select>
+	
+	<!-- 分页查询(没有进行逻辑删除的)总记录数 -->
+	<select id="findAllSize" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select
+		count(*) from sys_org u where 1=1
+		<if test="queryItem !=null and queryItem !='' ">
+        	${queryItem}
+        </if>
+	</select>
+	
+	<!-- 修改(没有进行逻辑删除的)数据 -->
+	<update id="updateByPrimaryKey" parameterType="com.baosight.iwater.system.organization.pojo.Organization">
+		update sys_org set
+		up_date=#{up_date,jdbcType=VARCHAR},
+		user_info=#{user_info,jdbcType=VARCHAR},
+		gmt_modified=#{gmt_modified,jdbcType=VARCHAR},
+		org_zhname=#{org_zhname,jdbcType=VARCHAR},
+		org_enname=#{org_enname,jdbcType=VARCHAR},
+		org_url=#{org_url,jdbcType=VARCHAR},
+		org_parent=#{org_parent,jdbcType=VARCHAR},
+		org_code=#{org_code,jdbcType=VARCHAR},
+		org_shortname=#{org_shortname,jdbcType=VARCHAR},
+		org_sort=#{org_sort,jdbcType=VARCHAR}
+		where ui_id=#{ui_id,jdbcType=VARCHAR}
+		and del_modified=1
+	</update>
+</mapper>

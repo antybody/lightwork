@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baosight.iwater.system.dic.dao.DicMapper">
+
+	<resultMap id="BaseResultMap" type="com.baosight.iwater.system.dic.pojo.CodeDic">
+		<result column="dic_id" property="dic_id" jdbcType="VARCHAR"/>
+		<result column="dic_code" property="dic_code" jdbcType="VARCHAR"/>
+		<result column="dic_name" property="dic_name" jdbcType="VARCHAR"/>
+		<result column="parent_code" property="parent_code" jdbcType="VARCHAR"/>
+		<result column="dic_desc" property="dic_desc" jdbcType="VARCHAR"/>
+		<result column="create_date" property="create_date" jdbcType="VARCHAR"/>
+		<result column="update_date" property="update_date" jdbcType="VARCHAR"/>
+		<result column="is_usable" property="is_usable" jdbcType="VARCHAR"/>
+		<result column="seq" property="seq" jdbcType="VARCHAR"/>
+		<result column="create_name" property="create_name" jdbcType="VARCHAR"/>
+		<result column="update_name" property="update_name" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<!-- <resultMap id="forTree" type="java.util.HashMap">
+		<result column="dic_id" property="id" jdbcType="VARCHAR"/>
+		<result column="dic_name" property="name" jdbcType="VARCHAR"/>
+		<result column="parent_id" property="pId" jdbcType="VARCHAR"/>
+	</resultMap> -->
+	
+	
+	<sql id="Base_Column_List">
+		dic_id, dic_code, dic_name, parent_code, dic_desc, create_date, update_date,
+		is_usable, seq, create_name, update_name
+	</sql>
+	
+	<!-- <select id="baseQuery" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_code_dic
+		where 1=1
+	</select> -->
+	
+	
+	<select id="queryForTree" resultType="java.util.HashMap"
+		parameterType="java.util.HashMap">
+		select
+			dic_id as "uiId",
+			dic_code as "id",
+			dic_name as "name",
+			parent_code as "pId",
+			'' as "highlight",
+			seq as "seq"
+		from sys_code_dic
+		where 1=1
+		<if test="dic_id != null and dic_id != '' ">
+			and dic_id = #{dic_id}
+		</if>
+		<if test="dic_name != null and dic_name != '' ">
+			and dic_name like CONCAT('%', #{dic_name}, '%') 
+		</if>
+		order by (seq+0) asc
+	</select>
+	
+	<!-- oracle 分页查询 显示 -->
+	<select id="orclQueryForChildnode" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		select
+			<include refid="Base_Column_List" />
+		from sys_code_dic
+		where parent_code = #{parent_code,jdbcType=VARCHAR}
+		order by (seq+0) asc
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>
+	
+	<select id="queryForChildnode" resultMap="BaseResultMap"
+		parameterType="java.util.HashMap">
+		select
+			<include refid="Base_Column_List" />
+		from sys_code_dic
+		where parent_code = #{parent_code,jdbcType=VARCHAR}
+		order by (seq+0) asc
+		<if test="paging == 'enable'">
+			limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<!-- oracle 分页查询 excel-->
+	<select id="orclQueryForChildnodes" resultType="java.util.HashMap" parameterType="java.util.HashMap">	
+		SELECT * FROM  
+		( SELECT A.*, ROWNUM RN  
+		FROM (
+		select
+			<include refid="Base_Column_List" />
+		from sys_code_dic
+		where parent_code = #{parent_code,jdbcType=VARCHAR}
+		order by (seq+0) asc
+		) A  
+		WHERE ROWNUM &lt;= #{end,jdbcType=INTEGER} ) 
+		WHERE RN &gt; #{start,jdbcType=INTEGER}
+	</select>	
+
+	<select id="queryForChildnodes" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		select
+			<include refid="Base_Column_List" />
+		from sys_code_dic
+		where parent_code = #{parent_code,jdbcType=VARCHAR}
+		order by (seq+0) asc
+		<if test="paging == 'enable'">
+			limit #{start,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	
+	<select id="countChildnode" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select
+			count(*)
+		from sys_code_dic
+		where parent_code = #{parent_code,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="queryCountForCode" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select
+			count(*)
+		from sys_code_dic
+		where 1=1
+		and dic_code = #{dic_code,jdbcType=VARCHAR}
+		<if test="dic_id != null and dic_id != '' ">
+			and dic_id != #{dic_id,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	
+	<select id="queryBeforeUpdate" parameterType="java.lang.String"
+		resultType="com.baosight.iwater.system.dic.pojo.CodeDic">
+		select
+			<include refid="Base_Column_List" />
+		from sys_code_dic
+		where dic_id = #{dic_id,jdbcType=VARCHAR}
+		and is_usable = '1'
+	</select>
+	
+	
+	<select id="queryForExportTest" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select
+			*
+		from t_excel_data_temp t1
+		left join
+			t_excel_loc_temp t2
+			on t1.data_id = t2.data_id
+	</select>
+	
+	
+	<insert id="insertForNew"	parameterType="java.util.HashMap">
+		insert into sys_code_dic(
+			dic_id,
+			dic_code,
+			dic_name,
+			parent_code,
+			dic_desc,
+			create_date,
+			is_usable,
+			seq,
+			create_name
+		)
+		values(
+			#{dic_id,jdbcType=VARCHAR},
+			#{dic_code,jdbcType=VARCHAR},
+			#{dic_name,jdbcType=VARCHAR},
+			#{parent_code,jdbcType=VARCHAR},
+			#{dic_desc,jdbcType=VARCHAR},
+			now(),
+			#{is_usable,jdbcType=VARCHAR},
+			#{seq,jdbcType=VARCHAR},
+			#{create_name,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	
+	<delete id="deleteForId" parameterType="java.util.HashMap">
+		delete from sys_code_dic
+		where dic_id=#{dic_id,jdbcType=VARCHAR}
+	</delete>
+	
+	
+	<update id="updateIsable" parameterType="java.util.HashMap">
+		update sys_code_dic set
+			is_usable=#{is_usable,jdbcType=VARCHAR}
+		where dic_id=#{dic_id,jdbcType=VARCHAR}
+	</update>
+	
+	
+	<update id="update" parameterType="java.util.HashMap">
+		update sys_code_dic set
+			dic_code=#{dic_code,jdbcType=VARCHAR},
+			dic_name=#{dic_name,jdbcType=VARCHAR},
+			parent_code=#{parent_code,jdbcType=VARCHAR},
+			dic_desc=#{dic_desc,jdbcType=VARCHAR},
+			update_date=now(),
+			is_usable=#{is_usable,jdbcType=VARCHAR},
+			seq=#{seq,jdbcType=VARCHAR},
+			update_name=#{update_name,jdbcType=VARCHAR}
+		where dic_id=#{dic_id,jdbcType=VARCHAR}
+	</update>
+</mapper>

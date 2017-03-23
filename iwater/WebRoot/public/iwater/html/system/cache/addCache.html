@@ -1,0 +1,58 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="cache_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/cache/cacheManager">缓存管理</a>></li>
+		<li>{{@menu_type}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form  ms-validate="@validate">
+		    <div class="iptgroup">
+				 <label for="name">菜单名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：
+				 </label>
+				 <input class="ipt_text" name="cache_menu" type="text" ms-duplex="@cache_menu"
+				        ms-rules="{required:true}" data-required-message="菜单名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">包名称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：
+				 </label>
+				 <input class="ipt_text" name="cache_package" type="text" ms-duplex="@cache_package"
+				 ms-rules="{required:true}" data-required-message="包名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">用户角色名称：
+				 </label>
+				 <input class="ipt_text" name="cache_role" type="text" ms-duplex="cache_role" 
+				 disabled="disabled" ms-rules="{required:true}" data-required-message="角色名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">对应方法名称：
+				 </label>
+				 <input class="ipt_text" name="cache_idname" type="text" ms-duplex="cache_idname"
+				 ms-rules="{required:true}" data-required-message="方法名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">缓存类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：
+				 </label>
+				 <select name="cache_type" class="ipt_select" ms-duplex="cache_type"><option value="">--请选择--</option><option value="1">刷新</option><option value="2">同步</option></select>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">刷新频率&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：
+				 </label>
+				 <input class="ipt_text" name="rate_name" readonly="readonly" type="text" ms-click="@_SetTime" ms-duplex="rate_name"
+				 ms-rules="{required:true}" data-required-message="刷新频率必须选择"/>
+				 <span class="ipt_erro"></span>
+				 <input type="hidden" id="cache_rate" name="cache_rate"  ms-duplex="cache_rate">
+			</div>
+			
+			<button   class="btn_fun btn_user" type="submit" >提交</button>
+			<a href="#" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

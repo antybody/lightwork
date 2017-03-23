@@ -1,0 +1,45 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="log_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/log/logManager">日志管理</a>></li>
+		<li>查看日志</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+		    <div class="iptgroup">
+				 <label for="name">日志用途：&nbsp;&nbsp;&nbsp;&nbsp;
+				 </label>
+				 <span  id="log_desc"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">添加时间：&nbsp;&nbsp;&nbsp;&nbsp;
+				 </label>
+				 <span id="add_date"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">操作人名称：&nbsp;
+				 </label>
+				 <span id="log_user"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">操作IP：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			   
+				 </label>
+				 <span id="log_IP"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">访问方法：&nbsp;&nbsp;&nbsp;&nbsp;
+				 </label>
+				 <span id="log_method"></span>
+			</div>
+			<div class="iptgroup">
+				<label for="name">访问类型：&nbsp;&nbsp;&nbsp;&nbsp;
+				 </label>
+				 <span id="log_type"></span>
+			</div>
+			
+			<a href="#!/log/logManager" class="btn_fun btn_user" >返回</a>
+		</form>
+    </div>
+</div>
+</div>

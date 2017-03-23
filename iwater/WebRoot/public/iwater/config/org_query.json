@@ -1,0 +1,5 @@
+[{"code":"0","msg":"成功读取查询条件","data":[
+      {"text":"自定义查询","isopen":"false","type":"self","num":"1","ismore":"0","ismoreselect":"0","subQuery":
+      		[{"text":"组织机构名称","columnkey":"org_zhname","subtype":"input","columnval":"","subformat":""}]}
+  ]	
+}]

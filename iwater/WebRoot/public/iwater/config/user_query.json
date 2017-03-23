@@ -1,0 +1,72 @@
+[
+    {
+        "code": "0",
+        "msg": "成功读取查询条件",
+        "data": [
+            {
+                "text": "自定义查询",
+                "isopen": "false",
+                "type": "self",
+                "num": "2",
+                "ismore": "1",
+                "ismoreselect": "0",
+                "subQuery": [
+                    {
+                        "text": "姓名",
+                        "columnkey": "user_name",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "账号",
+                        "columnkey": "user_code",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "组织机构名称",
+                        "columnkey": "org_zhname",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "角色名称",
+                        "columnkey": "role_zhname",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    }
+                ]
+            },
+            {
+                "text": "最高管理员",
+                "isopen": "false",
+                "type": "db",
+                "num": "2",
+                "ismore": "",
+                "ismoreselect": "checkbox",
+                "subQuery": [
+                    {
+                        "text": "是",
+                        "columnkey": "is_manager",
+                        "subtype": "dic",
+                        "columnval": "0",
+                        "subformat": "",
+                        "ischecked": ""
+                    },
+                    {
+                        "text": "否",
+                        "columnkey": "is_manager",
+                        "subtype": "dic",
+                        "columnval": "1",
+                        "subformat": "",
+                        "ischecked": ""
+                    }
+                ]
+            }
+        ]
+    }
+]

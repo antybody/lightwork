@@ -1,0 +1,80 @@
+[
+    {
+        "code": "0",
+        "msg": "成功读取查询条件",
+        "data": [
+            {
+                "text": "自定义查询",
+                "isopen": "false",
+                "type": "self",
+                "num": "2",
+                "ismore": "1",
+                "ismoreselect": "0",
+                "subQuery": [
+                    {
+                        "text": "权限名称",
+                        "columnkey": "power_name",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "权限代码",
+                        "columnkey": "power_code",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "权限权属",
+                        "columnkey": "power_owner",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    },
+                    {
+                        "text": "权限跟从",
+                        "columnkey": "power_follower",
+                        "subtype": "input",
+                        "columnval": "",
+                        "subformat": ""
+                    }
+                ]
+            },
+            {
+                "text": "权限类型",
+                "isopen": "false",
+                "type": "db",
+                "num": "3",
+                "ismore": "",
+                "ismoreselect": "checkbox",
+                "subQuery": [
+                    {
+                        "text": "接口",
+                        "columnkey": "power_type",
+                        "subtype": "dic",
+                        "columnval": "001",
+                        "subformat": "",
+                        "ischecked": ""
+                    },
+                    {
+                        "text": "菜单",
+                        "columnkey": "power_type",
+                        "subtype": "dic",
+                        "columnval": "002",
+                        "subformat": "",
+                        "ischecked": ""
+                    },
+                    {
+                        "text": "页面",
+                        "columnkey": "power_type",
+                        "subtype": "dic",
+                        "columnval": "004",
+                        "subformat": "",
+                        "ischecked": ""
+                    }
+                ]
+            }
+        ]
+    }
+]

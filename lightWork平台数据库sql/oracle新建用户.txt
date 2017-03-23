@@ -1,0 +1,30 @@
+﻿oracle创建新用户
+
+
+
+1.首先我们可以用scott用户以sysdba的身份登录oracle. 
+
+　　
+conn scott/tiger as sysdba
+
+
+
+2.然后我们就可以来创建用户了. 
+
+　　
+create user iwater identified by iwater123456;
+
+
+
+3.用户还不能登陆（没有登录权限）,因此还需要为用户分配权限 
+
+　　
+grant create session,create table,create view,create sequence,unlimited tablespace to iwater;
+
+
+
+参考博文: http://www.cnblogs.com/monkeybrother/p/6405314.html
+
+
+备注:	
+	如果有需要，可以另行赋予权限或者添加表空间。

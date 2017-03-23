@@ -1,0 +1,16 @@
+<!-- 加载代码片段 -->
+	<div class="right_comment">
+		<div class="right_main">
+			<div class="panel" ms-for="el in @menu_arr">
+				<div class="main_head">
+					 <strong :class="el.pic_class"></strong>
+					 <span>{{el.pmenu_name}}</span>
+				 </div>
+				 <div class="main_comment">
+					 <ul>
+						 <li ms-for="elm in el.child_menu"><a ms-attr="{href:elm.menu_url}" ms-class="elm.c_class" ><span>{{elm.cmenu_name}}</span></a></li>
+					 </ul>
+				  </div>
+			 </div>
+	  </div>
+	</div>

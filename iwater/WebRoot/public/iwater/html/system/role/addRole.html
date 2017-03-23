@@ -1,0 +1,87 @@
+<div class="right_comment">
+<div class="right_main mt10" ms-controller="role_form">
+   <ul class="nav">
+		<li><a href="#!/main">首页</a>></li>
+		<li><a href="#!/role/roleManager">角色管理</a>></li>
+		<li>{{@show_type}}</li>
+	</ul>
+	<div class="panel panel_over" style="padding-bottom:50px;">
+		<form ms-validate="@validate">
+			<div class="iptgroup">
+				<label for="name">角色类型：					   
+				 </label>
+				 <select name="role_type" class="ipt_select" ms-duplex="role_type"
+				 	ms-rules="{sysRole_addRole_item:true}" style="position:absolute;">
+				 	<option ms-for="(index,el) in @type_select" ms-attr="{value:el.type_id}">{{el.type_val}}</option>
+				 </select>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">角色代码：					   
+				 </label>
+				 <input class="ipt_text" name="role_code" type="text" ms-duplex="role_code"
+				 	ms-rules="{sysRole_addRole_code:true}"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">中文名称：
+				 </label>
+				 <input class="ipt_text" name="role_zhname" type="text" ms-duplex="role_zhname"
+				 	    ms-rules="{required:true}" data-required-message="名称必须填写"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<div class="iptgroup">
+				 <label for="name">英文名称：					   
+				 </label>
+				 <input class="ipt_text" name="role_enname" type="text" ms-duplex="role_enname"/>
+				 <span class="ipt_erro"></span>
+			</div>
+			<fieldset style="border:1px solid #ccc;padding:5px;margin:40px 20px 40px 20px;height:210px;" id="line_type">
+					<legend>权限选择</legend>
+					<div style="float:left;width:22%;border:1px solid #EEEEEE;margin-left:10px;">
+						<div style="float:left;width:100%;background:#EEEEEE;text-align:center;">接口权限</div>
+						<div style="float:left;height:170px;width:100%;overflow:auto;background:white;">
+						<div class="zTreeDemoBackground left">
+							<ul id="treeDemo1" class="ztree"></ul>
+						</div>
+    					</div>
+					</div>
+					
+					<div style="border-right:1px solid #ccc;float:left;height:210px;margin:-10px 0px 0px 20px;"></div>
+					
+					<div style="float:left;width:22%;border:1px solid #EEEEEE;margin-left:10px;">
+						<div style="float:left;width:100%;background:#EEEEEE;text-align:center;">菜单权限</div>
+						<div style="float:left;height:170px;width:100%;overflow:auto;background:white;">
+    					<div class="zTreeDemoBackground left">
+							<ul id="treeDemo2" class="ztree"></ul>
+						</div>
+    					</div>
+					</div>
+					
+					<div style="float:left;width:22%;border:1px solid #EEEEEE;margin-left:10px;">
+						<div style="float:left;width:100%;background:#EEEEEE;text-align:center;">页面权限</div>
+						<div style="float:left;height:170px;width:100%;overflow:auto;background:white;">
+    					<div class="zTreeDemoBackground left">
+							<ul id="treeDemo3" class="ztree"></ul>
+						</div>
+    					</div>
+					</div>
+					
+					<div style="float:left;width:22%;border:1px solid #EEEEEE;margin-left:10px;">
+						<div style="float:left;width:100%;background:#EEEEEE;text-align:center;">按钮权限</div>
+						<div style="float:left;height:170px;width:100%;overflow:auto;background:white;">
+    					<div class="zTreeDemoBackground left">
+							<ul id="treeDemo4" class="ztree"></ul>
+						</div>
+    					</div>
+					</div>
+					
+					
+    	    </fieldset>
+			
+			<a href="#" class="btn_fun btn_user" ms-click="@save">保存</a>
+			<a href="#" class="btn_fun bg_btngray" ms-click="@reset">重置</a>
+		</form>
+    </div>
+</div>
+</div>

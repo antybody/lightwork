@@ -14,6 +14,7 @@ requirejs
 				"page" : 'core/javascripts/core/lightwork.page',
 				"loginValid":'core/javascripts/core/lightwork.login',
 				"util" : 'core/javascripts/core/lightwork.util',
+				"json2":'core/javascripts/import/json2'
 			},
 			shim : {
 				'hashchange' : {
